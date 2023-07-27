@@ -2,8 +2,7 @@
 [![DOI](https://img.shields.io/badge/DOI-10.7910%2FDVN%2FXWIWVS-orange?style=plastic)](https://doi.org/10.7910/DVN/XWIWVS)
 ![GitHub](https://img.shields.io/github/license/amirhosseinzlf/STARLA?style=plastic)
 [![arXiv](https://img.shields.io/badge/arXiv%20-2206.07813-red?style=plastic&logo=arxiv)](https://arxiv.org/abs/2206.07813)
-# STARLA: Search-Based Testing Approach for Deep Reinforcement Learning Agents
-
+# SMARLA: A Safety Monitoring Approach for Deep Reinforcement Learning Agents
 ## Table of Contents
 - [Introduction](#introduction)
 - [Publication](#publication)
@@ -17,10 +16,9 @@
   * [Repository Structure](#repository-structure)
   * [Dataset Structure](#dataset-structure)
 - [Research Questions](#research-questions)
-  * [RQ1](#rq1-do-we-find-more-faults-than-random-testing-with-the-same-testing-budget)
-  * [RQ2](#rq2-can-we-rely-on-ml-models-to-predict-faulty-episodes)
-  * [RQ3](#rq3-can-we-learn-accurate-rules-to-characterize-the-faulty-episodes-of-rl-agents)
-- [Acknowledgements](#acknowledgements)
+  * [RQ1](#rq1-how-accurately-and-early-can-we-predict-safety-violations-during-the-execution-of-episodes)
+  * [RQ2](#rq2-how-can-the-safety-monitor-determine-when-to-trust-the-prediction-of-safety-violations)
+  * [RQ3](#rq3-what-is-the-effect-of-the-abstraction-level-on-the-safety-monitoring-component)
 
 
 ## Introduction
@@ -70,7 +68,7 @@ The pole starts upright, and the goal is to balance it by applying two discrete 
 
 
 <div align="center">
-    <img src="/Results/Cart-Pole/Cart-pole.png" width="45%" /> 
+    <img src="Results/Cart-Pole/Cart-pole.png" width="40%" /> 
 </div>
 
 As depicted in the figure, the state of the system is characterized by four elements:
@@ -102,7 +100,7 @@ Since the gravity is stronger than the engine of the car, the car cannot climb u
 
 
 <p align="center" width="100%">
-    <img width="45%" src="https://user-images.githubusercontent.com/23516995/212111530-f4f0f644-f946-495a-80ce-97d720910032.JPG"> 
+    <img width="40%" src="Results/Mountain-Car/Mountain-car.png"> 
 </p>
 
 The state of the agent is defined based on:
@@ -252,7 +250,7 @@ We monitored the execution of each episode with SMARLA and at each time step. Wh
 
 
 <p align="center" width="100%">
-   <img width="45%" alt="CartPole" src="https://user-images.githubusercontent.com/38301008/212175197-bba293be-da5b-4ea0-b894-e7803b262bf3.png">
+   <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ1 Cartpole.png">
  </p>
  <p align="center" width="50%">
    Number of detected functional faults in the Cartpole case study
@@ -260,7 +258,7 @@ We monitored the execution of each episode with SMARLA and at each time step. Wh
 
 
 <p align="center" width="100%">
-    <img width="45%" src="https://user-images.githubusercontent.com/38301008/212175170-6ba47d61-2260-44ec-b18c-fdc3d80d28a6.png" > 
+    <img width="45%" src="Results/Mountain-Car/RQ1 d_5 MC.png" > 
 </p>
 <p align="center" width="50%">
    Number of detected functional faults in the Mountain Car case study
@@ -287,6 +285,23 @@ Decision criteria identify the time step when the execution should be stopped an
 
 
 
+
+<p align="center" width="100%">
+   <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ1 Cartpole.png">
+ </p>
+ <p align="center" width="50%">
+   Number of detected functional faults in the Cartpole case study
+</p>
+
+
+<p align="center" width="100%">
+    <img width="45%" src="Results/Mountain-Car/RQ1 d_5 MC.png" > 
+</p>
+<p align="center" width="50%">
+   Number of detected functional faults in the Mountain Car case study
+</p>
+
+
 ## RQ3. What is the effect of the abstraction level on the safety monitoring component?
 
 *We aim in this research question to investigate if and how different levels of state abstraction affect the safety violation prediction capabilities of the model. Specifically, we want to study the impact of state abstraction levels on (1) the accuracy of the safety violation prediction model after training, and (2) the accuracy of the ML model in operation.
@@ -308,14 +323,14 @@ Indeed, our empirical analysis revealed that abstraction levels ranging from 0.1
 </p> -->
 
 <p align="center" width="100%">
-    <img width="50%" src="https://user-images.githubusercontent.com/38301008/212181441-1f3237dd-f95e-4a77-9e6a-01717ce33f6c.png" > 
+    <img width="50%" src="Results/Cart-Pole/Picture17.png" > 
 </p>
 <p align="center" width="50%">
    Accuracy of the fault detection rules in the Cartpole case study
 </p>
 
 <p align="center" width="100%">
-   <img width="50%" alt="CartPole" src="https://user-images.githubusercontent.com/38301008/212180368-aad9d8f4-c7ea-464f-8274-77bbade2c3e1.png">
+   <img width="50%" alt="CartPole" src="Results/Mountain-Car/RQ3-MC- abstraction.png">
  </p>
  <p align="center" width="50%">
    Accuracy of the fault detection rulesin the Mountain Car case study
@@ -332,24 +347,16 @@ The F1-score of the _Random Forest_ models for the two case studies, considering
 
 
 <p align="center" width="100%">
-    <img width="100%" src="https://user-images.githubusercontent.com/23516995/171912017-75548e5b-9151-42f1-afbc-ffafbd8d163e.png"> 
+    <img width="100%" src="Results/Cart-Pole/RQ3 Cartpole .png"> 
 </p>
 
 
 
 <p align="center" width="100%">
-    <img width="100%" src="https://user-images.githubusercontent.com/23516995/171912194-b58beb6f-7cdd-402a-99d2-193b1c2f1664.png"> 
+    <img width="100%" src="Results/Mountain-Car/RQ3_MC.png"> 
 </p>
 
 
-<p align="center" width="100%">
-    <img width="100%" src="https://user-images.githubusercontent.com/23516995/171912131-db832638-ea55-4754-a297-a8ae05a98b64.png"> 
-</p>
-
-
-<p align="center" width="100%">
-    <img width="50%" src="https://user-images.githubusercontent.com/23516995/171913026-a1713863-4ac8-46d9-b930-6a20b7ba1a53.png"> 
-</p>
 
 
 As visible, the performance of the safety violation prediction model is highly sensitive to the selected abstraction level during the training phase, especially in the case of Mountain-Car. Despite selecting only abstraction levels that maximize the model's performance during training, they required different numbers of time steps to achieve the highest accuracy in predicting safety violations. This sensitivity highlights the importance of carefully selecting the appropriate abstraction level for optimal model performance.

@@ -45,26 +45,30 @@ This repository is a companion page for the following paper
 
 ## Description of the Approach
 
-STARLA Requires a DRL agent and its training data as input as tries to effectively and efficiently generate failing test cases (episodes) to reveal the faults of agents policy. Detailed approach is depicted in the following diagram:
 
+SMARLA is a safety monitoring system that is trained on episodes from the agent's execution. SMARLA is designed to predict safety violations as soon as possible and initiate safety mechanis to prevent potential harms and damages. However SMARLA can be used to (1) Identify any safety violation that may arise in uncertain and dynamic environments; (2) Provide insight into the decision making and learning process; (3) Help to identify when retraining is required.
+Detailed approach is depicted in the following diagram:
+
+
+![Alt text](<HazardDetection-fp2 (1).png>)
 
 ![Approach4_page-0001](https://user-images.githubusercontent.com/23516995/168500802-50486e30-2c5d-43c2-a080-9cc01d964e30.jpg)
 
 
-As depicted, the main objective of STARLA is to generate and find episodes with high fault probabilities in order to assess whether an RL agent can be safely deployed. 
-The algorithm uses the data from the Agent to build ML models that predict the probabilities of fault (to which extent episodes are similar to faulty episodes). The outputs of these models are combined with the reward of the agent and certainty level. They are meant to guide the Genetic search toward faulty episodes. 
+As depicted, the main objective of SMARLA is to predict safety violaition as early as possible. The early detection of unsafe episodes is important for any safety-critical system to enable prompt corrective actions to be taken and thus prevent unsafe behavior of the agent. Our approach predicts such safety violations by monitoring the behavior of the RL agent and predicting unsafe episodes using a machine learning (ML) model based on the agent states. To train the ML model we randomly execute the RL agent and labele the episodes as safe or unsafe. Due to the large size of the state space, we rely on state abstraction to reduce the state space and enhance the learnability of our ML model. Then the model monitors the behavior of the agent and estimate the probability of encountering an unsafe state while an episode is being executed. We rely on the confidence intervals of such probability to accurately determine the optimal time step to trigger safety mechanisms. 
 
-In the Genetic search, we use specific crossover and mutation functions. Also as we have multiple fitness functions, we are using MOSA Algorithm[3]. For more explanations please see our paper. [arXiv:2206.07813](https://arxiv.org/abs/2206.07813)
+Our approach can be best understood by drawing an analogy to how humans asses the risk before decision-making. In reinforcement learning (RL), the learning process is inspired by the way humans learn from their actions and their outcomes.
+Similarly, our safety monitor functions like an observant, keeping an eye on the desirability and potential consequences of different actions taken by the agent in each state. Just as we evaluate the potential outcomes of our actions to make informed decisions, the safety monitor assesses the states and actions to predict the likelihood of safety violations if the execution is continued.
 
 
 # Use cases
 
 ## Use Case 1: Cartpole
 
-We use the Cartpole environment from the OpenAI Gym library[2] as first case study. Cartpole environment is an open-source and widely used environment for RL agents
+We use the Cartpole environment from the OpenAI Gym library[2] as first case study. Cartpole environment is an open-source and widely used environment for RL agents.
 
 In the Cart-Pole (also known as invert pendulum), a pole is attached to a cart, which moves along a track. The movement of the cart is bidirectional so the available actions are pushing the cart to the left and right. However, the movement of the cart is restricted and the maximum rage is 2.4 from the central point. 
-The pole starts upright, and the goal is to balance it by moving the cart left or right.
+The pole starts upright, and the goal is to balance it by applying two descrete actions of (1) moving the cart to the left (2) moving the cart to the right.
 
 
 <p align="center" width="100%">
@@ -82,17 +86,14 @@ As depicted in the figure, the state of the system is characterized by four elem
 • The angular velocity of the pole.
 
 
-We provide a reward of +1 for each time step when the pole is still upright. 
+A reward of +1 in considered for each time step when the pole is still upright. 
 The episodes end in three cases: 
 1. The cart is away from the center with a distance more than 2.4 units
 2. The pole’s angle is more than 12 degrees from vertical
 3. The pole remains upright during 200 time-steps.
 
-Consider a situation in which we are trying to reach a reward above 70.
 
-We define functional faults in the Cart-Pole problem as follows:
-
-- **Functional fault:** If in a given episode, the cart moves away from the center with a distance above 2.4 units, regardless of the accumulated reward, we consider that there is a functional fault in that episode.
+- **safety violation:** An episode is considered unsafe if the cart moves away from the center with a distance above 2.4 units, regardless of the accumulated reward. In such a situation, the cart can pass the border and cause damage to other entities in the surroundings, which is therefore considered a safety violation.
 
 ## Use Case 2: Mountain Car
 
@@ -126,27 +127,23 @@ Episodes can have three termination scenarios:
 2. crossing the left border, or 
 3. exceeding the limit of200 time steps.
 
-In our custom version of the Mountain Car, climbing the left hill is considered an unsafe situation. Consequently, reaching to the leftmost position in the environment results in a termination with the lowest reward. 
 
-We define functional faults as follows:
 
-- **Functional fault:** If in an episode, the car climbs the left hill and passes the left border of the environment, we consider that there is a functional fault and the reward is equal to the minimum reward (-200).
+- **Safety violation:** A safety violation is simulated by considering the crossing of the left border of the environment as an irrecoverable unsafe state that poses potential damage to the car. Consequently, when the car crosses the left border of the environment, it triggers a safety violation, leading to the termination of the episode. This modification allows us to assess the effectiveness of SMARLA in predicting safety violations.
 
 
 ## Code Breakdown
-This project is implemented in python with GoogleColab (Jupyter-notebook).
+This project is implemented in python with Jupyter-notebook.
 
 
-We have two main notebook files the first one is `STARLA.ipynb` which contains the implementation of our search-based testing approach. The second one `Execute_Results.ipynb` is the final step to execute the results as is meant to prepare data required for answering RQ1 & RQ3.
+In this replication package, we have two notebook files for each case study the first one is `SMARLA_{Case Study Name}.ipynb` which contains the implementation of safety monitor. The second one `RQ_{Case Study Name}.ipynb` is the final step to reproduce the results to answer  RQ1 - RQ2 and RQ3. However the discription and the details of RQ3 are not presented in the paper due to the space limitations. For this reason we have explaind RQ3 in details here in our replication package.
 
-`STARLA.ipynb` contains the implementation of our search-based testing approach. The results are stored as files. 
+`SMARLA_{Case Study Name}.ipynb` contains the implementation of SMARLA. Safety monitoring model and Abtraction data will be generated and stored as files. 
 
-`Execute_Results.ipynb` removed the duplicated episodes in the results and executed the final set of episodes. This is to keep only valid and consistent failing episodes. Thes results are saved as files.
+`RQ_{Case Study Name}.ipynb` transformes the episodes and analysis the performace of safety violation prediction model with different parameters, and generates plots and figures to answer RQs
 
-Mountain Car folder contains the implementation of STARLA on Mountain Car problem. Files follow the same structore as well. 
-`RUN_STARLA_MTC.ipynb` contains the implementation of our search-based testing approach for Mountain Car enrironment, `RE_EXECUTE_MTC.ipynb` is the final step to execute the results.
+Mountain-Car folder contains the implementation of SMARLA on Mountain Car problem. Dataset and Result files follow the same structore as well. 
 
-As our algorithm is randomized to have a fair comparison we need to run our algorithm and the baseline many times and compare the results. 
 
 
 ## Requirements
@@ -169,21 +166,18 @@ The code was developed and tested based on the following packages:
 - numpy 1.21.6
 - pandas 1.3.5
 ---------------
-Change the version of TensorFlow using the line below:
-
-`%tensorflow_version 1.x`
 
 Here is the documentation on how to use this replication package.
 
 
 ### Getting Started
 
-1. Clone the repo on your Google drive and run the codes using Google Colab https://colab.research.google.com/.
-2. Download the Dataset of replication package from Harvard Dataverse [here](https://doi.org/10.7910/DVN/XWIWVS) and upload it to you Google drive (if you change the location of the files you need to update their path in notebooks).
-3. To generate test episodes: open `STARLA.ipynb` Mount your drive and run the code.
-4. To execute the final results run `Execute_Results.ipynb`.
-
-The code to generate the results of research questions are in the `RQ` folder 
+1. Clone the repo.
+2. Download the Dataset of replication package 
+3. Update the path to the dataset in the scripts
+4. Update the path for storing the results if needed
+5. To build the safety monitoring model on Mountain-Car: open `SMARLA_MountainCar.ipynb` and run the code. Similarly for Cart-Pole `SMARLA_CartPole.ipynb`
+6. To generate the final results open `RQ_{Case Study Name}.ipynb` and run the notebook step by step.
 
 
 
@@ -194,78 +188,52 @@ This is the root directory of the repository. The directory is structured as fol
     Replication package of STARLA
      .
      |
-     |STARLA/
+     |Cart-Pole/                                  Cart-Pole use case
      |
-     |--- Cart-Pole/                               Cart-Pole use case
+     |---------- SMARLA_CartPole.ipynb            Implementation of the SMARLA on Cart-Pole problem
      |
-     |---------- /RQ/                              Codes to replicate RQ1 - RQ2 and RQ3
-     |
-     |---------- STARLA.ipynb                      Implementation of the algorithm on Cart-Pole problem
-     |
-     |---------- Execute_Results.ipynb             Execution of the result (required for RQ1 and RQ3)            
+     |---------- RQ_CartPole.ipynb                Codes to replicate RQ1 - RQ2 and RQ3
      |
      |
-     |--- Mountain_Car/                            Mountain Car use case
+     |Mountain_Car/                               Mountain-Car use case
      |
-     |---------- /RQ/                              Codes to replicate RQ1 - RQ2 and RQ3
+     |---------- SMARLA_MountainCar.ipynb         Implementation of the SMARLA on Mountain-Car problem
      |
-     |---------- RUN_STARLA_MTC.ipynb                      Implementation of the algorithm on Mountain Car problem
+     |---------- RQ_MountainCar.ipynb             Codes to replicate RQ1 - RQ2 and RQ3    
      |
-     |---------- RE_EXECUTE_MTC.ipynb             Execution of the result (required for RQ1 and RQ3)          
+     |   
   
 ### Dataset Structure 
 
-  A Dataset is provided to reproduce the results. This dataset contains our DRL agent, training data of the agent, episodes of random testing of the agent, episodes generated STARLA, execution data of generated episodes as well as the data required to compare the similarities of states and answer RQs for both use cases. Thus the dataset is devided into two parts:
-  1. Dataset_Cart_Pole 
-  2. Dataset_MTC
+  A Dataset is provided to reproduce the results. This dataset contains our DRL agent, episodes of random testing of the agent, Abstraction files, and the safety monitoring models for each case study. Thus the dataset is devided into two parts:
+  1. Cart-Pole 
+  2. Mountain-Car
   
   below is the structure of the dataset:
 
     Dataset
      .
-     |Dataset_Cart_pole/
+     |Cart-Pole/
      |
-     |--- /dqn-cartpole-50000-with127-GA-Mut-2.pkl             Trained DQN agent 50k steps in Cartpole environment 
+     |--- /Trained_agent/                                      Trained DQN agent 70k steps in Cart-Pole environment 
      |
-     |--- /dict_GA_Mut_10-09-2020.csv                          Training data of ML models 
+     |--- /Random_episodes/                                    Random episodes generated for training and testing 
      |
-     |--- /Abstract_unique1_for_d=1.pickle                     Abstract states data     
+     |--- /ABS/                                                Abstraction data     
      |
-     |--- /mutation_number_t.pickle                            Number of Mutations that happened during the search
-     |
-     |--- /random_test_data.pickle                             Random tests episodes representing the final policy of the agent. This also provides the data as a baseline for comparison.
-     |
-     |--- /random_test_data_start_state.pickle                 Initial states of random episodes
-     |
-     |--- /Results/                                            Generated episodes as a result of running STARLA.ipynb. This folder contains results of 20 executions
-     |
-     |--- /Executions/                                         Executed results 
-     |
-     |--- /Execution-Similarity/                               Executed results + similarity of states
+     |--- /ML_models/                                          ML based safety monitoring models
      |
      |
      |
+     |Mountain-Car/
      |
-     |Dataset_MTC/
+     |--- /Trained_agent/                                      Trained DQN agent 90k steps in Mountain-Car environment 
      |
-     |--- /dqn-4-1-6-89946.zip                                 Trained DQN agent 90k steps in Mountain Car environment 
+     |--- /Random_episodes/                                    Random episodes generated for training and testing 
      |
-     |--- /Final_episodes_trainand_Test_2062_FIXED2.pickle     Training data of ML models 
+     |--- /Abstraction/                                        Abstraction data     
      |
-     |--- /newly_seen_abs.pickle                               Newly seen abstract states during the search     
-     |
-     |--- /ToTalMutationNumber0.pickle                         Number of Mutations that happened during the search
-     |
-     |--- /RandomDataset/                                      Random tests episodes representing the final policy of the agent. This also provides the data as a baseline for comparison.
-     |
-     |--- /Abstraction/                                        Abstract class data
-     |
-     |--- /Results/                                            Results of running RUN_STARLA_MTC.ipynb. This folder contains results of 20 executions
-     |
-     |--- /Generation/                                         Generated episodes in 20 executions 
-     |
-     |--- /Exe_Sim/                                            Executed results + similarity of states
-                 
+     |--- /ML_models/                                          ML based safety monitoring models                 
      
 ----------------
      
@@ -276,31 +244,12 @@ This is the root directory of the repository. The directory is structured as fol
 
 Our experimental evaluation answers the research questions below.
 
-## RQ1: Do we find more faults than Random Testing with the same testing budget?
+## RQ1. How accurately and early can we predict safety violations during the execution of episodes?
 
-*In this research question we want to study the effectiveness of STARLA in finding more faults than Random Testing when we consider the same testing budget, measured as the number of executed episodes.*
+*This research question aims to investigate how accurately and early our approach can predict safety violations of the RL agent during its execution. Preferably, high accuracy should be reached as early as possible before the occurrence of safety violations to enable the effective activation of safety mechanisms.*
 
-To do so, we consider two practical testing scenarios:
-In both scenarios training episodes of the RL agent are given.
-### Scenario1: Randomly executed episodes are available or inexpensive: 
-In this scenario, we can consider that episodes of random executions of the agent are available. 
-One example is when the agent is tested to some extent. However, before final deployment, we want further test the agent using STARLA. 
-Another situation is when the RL agent is trained and tested using both a simulator and hardware in the loop [4].
-
-In this situation, an agent is trained and tested on a simulator in order to have a ”warm-start” learning on real hardware [4]. Since STARLA produces episodes with a high fault probability, we can use it to test the agent when executed on real hardware to further assess the reliability of the agent. In such situation, STARLA uses episodes that are generated with a simulator and executes the newly generated episodes on the hardware.
-
-More precisely, the total testing budget in this scenario is equal to:
-
-Mutated episodes that have been executed during the search + Faulty episodes generated by STARLA (executed after the search)
-
-
-### Scenario2: Randomly executed episodes are generated with STARLA and should be accounted for in the testing budget: 
-In the second scenario, we assume that the agent is trained but not tested so far and we want to test the agent using STARLA. Therefore, we need to use part of our testing budget for random executions, to generate the required episodes. 
-
-More precisely, the total testing budget in this scenario is equal to:
-
-The number of episodes in the initial population (generated through random executions of the agent) + Mutated episodes that have been executed during the search + Faulty episodes generated by STARLA (executed after the search)
-
+To answer this research question, we build a dataset of 1000 episodes generated by random executions. To build our ground truth, these episodes were labeled as either safe or unsafe, taking into account the presence or absence of safety violations in each episode. 
+We monitored the execution of each episode with SMARLA and at each time step. When the upper bound of the confidence interval is greater than 50% during the execution of the episode, SMARLA classifies the episode as unsafe. For each case study, we computed the number of successfully predicted safety violations, measured the prediction precision, recall, and F1-score at each time step, over the set of episodes. Results are presented in the following figures.
 
 
 
@@ -320,28 +269,41 @@ The number of episodes in the initial population (generated through random execu
 </p>
 
 
-**Answer:** For both scenarios and in both case studies, we find significantly more functional faults with STARLA than with Random Testing using the same testing budget. 
+**Answer:** SMARLA demonstrated high accuracy in predicting safety violations from RL agents. Moreover, such accurate predictions can be obtained early during the execution of episodes, thus enabling the system to prevent or mitigate damages. 
 
 
-## RQ2: Can we rely on ML models to predict faulty episodes?
+## RQ2. How can the safety monitor determine when to trust the prediction of safety violations?
+*In this research question, we investigate the use of confidence intervals as a mechanism for the safety monitor to determine the appropriate time step to trigger safety mechanisms.*
 
-*In this research question we investigate the accuracy of ML classifiers in predicting faulty episodes of the RL agent.*
-
-We use Random Forest to predict the probabilities of reward and functional faults in a given episode.
-To build our training dataset, we sampled episodes from both episodes generated through random executions of the agent and episodes from the training phase of the agent. Episodes are encoded based on the presence or absence of their abstract states. We have two different ML models, one for predicting the probability of a reward fault and the other one for predicting the probability of a functional fault. We considered 70 % of data for training and 30% for testing.
-
-**Answer:** Using the mentioned ML classifier and feature representation, we can accurately classify the episodes of RL agents as having functional faults or no fault at all.
+This investigation is based on the same set of episodes randomly generated for RQ1. At each time step $t$, we collect the predicted probability of safety violation $P_{e_i}(t)$ and the corresponding confidence interval $[Low(t),Up(t)]$. The lower bound ($Low(t)$) and upper bound($Up(t)$) of the confidence interval are computed using the methodology detailed in the approach section in the paper. 
 
 
 
-## RQ3. Can we learn accurate rules to characterize the faulty episodes of RL agents?
+To determine the best decision criterion for triggering safety mechanisms, we considered and compared the following alternative criteria:
+- If the probability of safety violation, $P_{e_i}(t)$, is equal to or greater than 50\%, then the safety mechanism is activated.
+- If the upper bound of the confidence interval at time step $t$ (based on the confidence level of 95\%) is above 50\% (i.e., $Up(t) \geq 50\%$), then the safety mechanism is activated. This is a conservative approach as the actual probability has a 97.5\% chance to be below that value. This may result in many false positives but it leads to early predictions of unsafe episodes and is unlikely to miss any unsafe episodes.
+- If the lower bound of the confidence intervals at time step $t$ is above 50\% (i.e., $Low(t) \geq 50\%$), then the safety mechanism is activated. In this criterion, the actual probability has only a 2.5\% chance to be below that bound and we thus minimize the occurrence of false positives, at the cost of relatively late detection of unsafe episodes and more false negatives. 
 
-*Here, we investigate the learning of interpretable rules that characterize faulty episodes to understand the conditions under which the RL agent can be expected to fail.*
 
-For this reason, we need to rely on an interpretable ML model, in this case, a Decision Tree model, to learn such rules.
-We assess the accuracy of decision trees and therefore our ability to learn accurate rules based on the faulty episodes that we identify with STARLA. 
-In practice, engineers will need to use such an approach to assess the safety of using an RL agent and understand the reasons of faults.
-In this part, we assess the accuracy of trained models that extract the rules of functional and reward faults based on k-fold cross-validation.
+Decision criteria identify the time step when the execution should be stopped and safety mechanisms should be activated. However, note that during our test, we continue the execution of the episodes until termination in order to extract the number of time steps until termination and the true label of episodes for our analysis. 
+
+
+
+## RQ3. What is the effect of the abstraction level on the safety monitoring component?
+
+*We aim in this research question to investigate if and how different levels of state abstraction affect the safety violation prediction capabilities of the model. Specifically, we want to study the impact of state abstraction levels on (1) the accuracy of the safety violation prediction model after training, and (2) the accuracy of the ML model in operation.
+Our goal is to gain insights into the possible trade-offs between the size of the feature space and the granularity of information captured by features, both determined by the abstraction level. Such an analysis aims to provide guidance in selecting proper abstraction levels in practice.*
+
+To answer this research question, we studied how different levels of state abstraction affect the performance of the safety violation prediction model in the training phase and in operation.
+
+
+**The accuracy of the Random Forest model after training with different abstraction levels.** This aspect involves evaluating the performance of the Random Forest model once it has been trained on the available training data. To build our dataset, we sampled 2200 episodes through random execution of the RL agent, including 215 unsafe episodes for Cart-Pole and 279 unsafe episodes for Mountain-Car. We randomly sampled 70% of the dataset to train and 30% to compute the F1-scores of the models using different levels of abstraction $d$.
+
+A lower abstraction level implies finer-grained states, while higher abstraction levels represent coarser ones that lead to a smaller feature space.
+
+Based on the analysis, we observed that higher abstraction levels lead to lower accuracy in predicting safety violations, above a threshold of 0.3 for Cart-Pole and 1000 for Mountain-Car. This is attributed to the smaller feature space associated with higher levels of abstraction. As the abstraction level decreases, the feature space grows larger, allowing for more precise information to be captured by features. Consequently, the accuracy of the safety violation prediction model tends to increase until it eventually plateaus and then starts to decrease. This decrease occurs due to the very large number of abstract states, making it more challenging to learn in a larger feature space.
+This suggests that there is an optimal range of abstraction that yields the highest accuracy in predicting safety violations. Going beyond this optimal range can reduce the performance of safety monitoring. This optimal range of abstraction level depends on the environment, the RL agent, and the reward. This arises from the fact that the calculation of Q-values, which are used in the abstraction process, relies heavily on the reward signal. Consequently, the choice of reward function significantly influences the optimal range of abstraction levels.
+Indeed, our empirical analysis revealed that abstraction levels ranging from 0.1 to 0.3 result in the highest accuracy for Cart-Pole while for Mountain-Car,  abstraction levels from 0.5 to 1000 result in the highest accuracy. Therefore, for the next experiments, we consider the abstraction levels within the optimal ranges of each case study. 
 
 <!-- <p align="center" width="100%">
     <img width="50%" src="https://user-images.githubusercontent.com/23516995/169616496-bebacddf-cb97-4ab3-bcf9-cfb8b654a4ee.png"> 
@@ -362,10 +324,14 @@ In this part, we assess the accuracy of trained models that extract the rules of
 </p>
 
 
-Such highly accurate rules can help developers understand the conditions under which the agent fails. One can analyze, the concrete states that correspond to abstract states leading to faults to extract real-world conditions of failure. 
-For example, we extracted the following faulty rule in the Cartpole problem $Not(S^\phi_{5})$ and $S^\phi_{12}$ and $S^\phi_{23}$ from our decision tree. First we extract all faulty episodes following this rule. Then, we extract from these episodes all concrete states belonging to the abstract states with the condition of presence in **R1**, i.e., $S^\phi_{12}$ and $S^\phi_{23}$.
-For abstract states $S^\phi_5$ where the rule states they should be absent, we extract the set of all corresponding concrete states from all episodes in the final dataset.
-Finally, for each abstract state in the rule, we analyze the distribution of each characteristic of the corresponding concrete states (i.e., the position of the cart, the velocity, the angle of the pole and the angular velocity) to interpret the situations under which the agent fails. below you see the boxplots of the mentioned distributions.
+**The performance of the model in operation with different abstraction levels.** This part focuses on evaluating the performance of the safety violation prediction model during the execution of episodes. We analyze how well the trained _Random Forest_ models perform in operation across different time steps while considering different abstraction levels.
+The main focus for such evaluation is the model's ability to accurately predict safety violations early. 
+
+The F1-score of the _Random Forest_ models for the two case studies, considering various levels of abstraction, are presented in Figures bellow: 
+
+
+
+
 
 <p align="center" width="100%">
     <img width="100%" src="https://user-images.githubusercontent.com/23516995/171912017-75548e5b-9151-42f1-afbc-ffafbd8d163e.png"> 
@@ -383,25 +349,25 @@ Finally, for each abstract state in the rule, we analyze the distribution of eac
 </p>
 
 
-Moreover, we rely on the median values of the distribution of the states' characteristics to illustrate each abstract state and hence the failing conditions. 
-We illustrate in the following figure an interpretation of such conditions.
-
-
 <p align="center" width="100%">
     <img width="50%" src="https://user-images.githubusercontent.com/23516995/171913026-a1713863-4ac8-46d9-b930-6a20b7ba1a53.png"> 
 </p>
 
-Each cart represents one abstract state. The Gray cart depicts the state of the system in abstract state $S^\phi_5$, which should be absent in the episode. The black carts represent the presence of abstract states $S^\phi_{12}$ and $S^\phi_{23}$, respectively. Having both states of the cart shown in the right as and not having the state at the left indicate a fault.
 
-We realized that the presence of abstract states $S^\phi_{12}$ and $S^\phi_{23}$ represent situations where the cart is close to the right border of the track and the angle of the pole is towards the right. To compensate for the large angle of the pole, as you can see in the figure, the agent has no choice but to push the cart to the right, which results in a fault because of passing the border. Moreover, abstract state $S^\phi_{5}$ represents a situation where the angle of the pole is not large, and the position of the cart is toward the right but not close to the border. In such situation, the agent will be able to control the pole in the remaining area and keep the pole upright without crossing the border, which justifies why such abstract state should be absent in faulty episodes that satisfy rule **R1**.
+As visible, the performance of the safety violation prediction model is highly sensitive to the selected abstraction level during the training phase, especially in the case of Mountain-Car. Despite selecting only abstraction levels that maximize the model's performance during training, they required different numbers of time steps to achieve the highest accuracy in predicting safety violations. This sensitivity highlights the importance of carefully selecting the appropriate abstraction level for optimal model performance.
 
-**Answer:** By using STARLA and interpretable ML models, such as Decision Trees, we can accurately learn rules that characterize the faulty episodes of RL agents.
 
-NOTE:TensorFlow 1.X is no longer supported by Google Colab. It is recommended that you create your own virtual environment with Python 3.7 and install the necessary requirements.
+Based on Figures, we observe that the most suitable abstraction level is $d=0.11$ for _Cart-Pole_  and  $d=5$ for _Mountain-Car_, as they exhibit the most accurate and earliest prediction of safety violations compared to other abstraction levels. 
+This indicates that these abstraction levels are particularly effective at capturing relevant features at the right level of granularity to support learning and the prediction of  unsafe episodes. 
 
-Acknowledgements
---------------
-This work was supported by a research grant from General Motors as well as the Canada Research Chair and Discovery Grant programs of the Natural Sciences and Engineering Research Council of Canada (NSERC).
+To select the best abstraction level in practice, for a given RL agent, we recommend training the safety violation prediction model with different levels of abstraction and then identifying the optimal range which corresponds to the highest F1-score after training, as described in the first part of this research question. Abstraction levels can be mapped to numbers of abstract states and this can be used to determine the abstraction level range to be explored. As a rule of thumb, to make this procedure more practical, we recommend to cover the range going from a few hundred states to around 100,000 states. However, this range is dependent on the complexity of the environment, where a more complex environment may require a larger number of abstract states to be able to accurately predict safety violations. 
+
+Within the optimal range, we further analyze the time steps at which the safety monitor reaches its peak performance in operation. Therefore, we should try different abstraction levels within the optimal range when using the safety violation prediction model during the execution of episodes. The goal is to identify the level of abstraction that enables the safety monitor to reach its highest performance in predicting safety violations at the earliest time step possible. 
+
+
+
+
+**Answer:** The accuracy of safety violation prediction models is sensitive to the selected abstraction level and, therefore, the latter should be carefully selected following the proposed procedure.
 
 
 References
@@ -414,19 +380,3 @@ References
 
 4- [virtual vs. real:Trading off simulations and physical experiments in reinforcement learning with Bayesian optimization](https://dl.acm.org/doi/abs/10.1109/ICRA.2017.7989186)
 
-
-Cite our paper:
---------
-
-If you've found STARLA useful for your research, please cite our paper as follows:
-
-    @misc{https://doi.org/10.48550/arxiv.2206.07813,
-    doi = {10.48550/ARXIV.2206.07813},
-    url = {https://arxiv.org/abs/2206.07813},
-    author = {Zolfagharian, Amirhossein and Abdellatif, Manel and Briand, Lionel and Bagherzadeh, Mojtaba and S, Ramesh},
-    keywords = {Software Engineering (cs.SE), Artificial Intelligence (cs.AI), Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
-    title = {A Search-Based Testing Approach for Deep Reinforcement Learning Agents},
-    publisher = {arXiv},
-    year = {2022},
-    copyright = {arXiv.org perpetual, non-exclusive license}
-    }

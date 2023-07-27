@@ -49,10 +49,8 @@ SMARLA is a safety monitoring system that is trained on episodes from the agent'
 The detailed approach is depicted in the following diagram:
 
 
-![Approach](https://github.com/amirhosseinzlf/SMARLA/assets/23516995/79a1869b-5e7f-4f13-9060-85db78215cbc)
+![Approach](/Results/Approach.png)
 
-
-![Approach4_page-0001](https://user-images.githubusercontent.com/23516995/168500802-50486e30-2c5d-43c2-a080-9cc01d964e30.jpg)
 
 
 As depicted, the main objective of SMARLA is to predict safety violations as early as possible. The early detection of unsafe episodes is important for any safety-critical system to enable prompt corrective actions to be taken and thus prevent unsafe behavior of the agent. Our approach predicts such safety violations by monitoring the behavior of the RL agent and predicting unsafe episodes using a machine learning (ML) model based on the agent states. To train the ML model we randomly execute the RL agent and labeled the episodes as safe or unsafe. Due to the large size of the state space, we rely on state abstraction to reduce the state space and enhance the learnability of our ML model. Then the model monitors the behavior of the agent and estimates the probability of encountering an unsafe state while an episode is being executed. We rely on the confidence intervals of such probability to accurately determine the optimal time step to trigger safety mechanisms. 
@@ -71,9 +69,9 @@ In the Cart-Pole (also known as invert pendulum), a pole is attached to a cart, 
 The pole starts upright, and the goal is to balance it by applying two discrete actions of (1) moving the cart to the left and (2) moving the cart to the right.
 
 
-<p align="center" width="100%">
-    <img width="45%" src="https://user-images.githubusercontent.com/23516995/168501958-b4e278ab-dce6-419c-bb35-4dc1f85b6d99.jpg"> 
-</p>
+<div align="center">
+    <img src="/Results/Cart-Pole/Cart-pole.png" width="45%" /> 
+</div>
 
 As depicted in the figure, the state of the system is characterized by four elements:
 

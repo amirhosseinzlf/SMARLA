@@ -27,7 +27,7 @@
 
 In this project, we propose a Safety Monitoring Approach for Reinforcement Learning Agents (_SMARLA_).  
 <!-- _SMARLA_ is a Safety Monitoring Approach for Reinforcement Learning Agents.  -->
-_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods~\cite{pmlr-v80-abel18a,jiang2018notes, li2006towards} to reduce the state space and thus increase the learnability of machine learning models to predict violations. We Implement SMARLA on to well-known RL benchmark problems known as Mountain-Car and Cart-Pole control problem.
+_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods~\cite{pmlr-v80-abel18a,jiang2018notes, li2006towards} to reduce the state space and thus increase the learnability of machine learning models to predict violations. We Implement SMARLA on to well-known RL benchmark problems known as Mountain-Car and Cart-Pole control problems.
 
 
 <!-- This approach effectively searches for failing executions of the agent where we have a limited testing budget. To achieve this, we rely on machine learning models to guide our search and we use a dedicated genetic algorithm to narrow the search toward faulty episodes. These episodes are sequences of states and actions produced by the DRL agent. We apply STARLA on a DQN agent trained in a Cartpole environment for 50K time steps. -->
@@ -40,22 +40,22 @@ This repository is a companion page for the following paper
 
 > Submitted to ICSE 2024 
 
-<!-- [arXiv:2206.07813](https://arxiv.org/abs/2206.07813) -->
 
 
 ## Description of the Approach
 
 
-SMARLA is a safety monitoring system that is trained on episodes from the agent's execution. SMARLA is designed to predict safety violations as soon as possible and initiate safety mechanis to prevent potential harms and damages. However SMARLA can be used to (1) Identify any safety violation that may arise in uncertain and dynamic environments; (2) Provide insight into the decision making and learning process; (3) Help to identify when retraining is required.
-Detailed approach is depicted in the following diagram:
+SMARLA is a safety monitoring system that is trained on episodes from the agent's execution. SMARLA is designed to predict safety violations as soon as possible and initiate safety mechanisms to prevent potential harm and damages. However, SMARLA can be used to (1) Identify any safety violation that may arise in uncertain and dynamic environments; (2) Provide insight into the decision-making and learning process; (3) Help to identify when retraining is required.
+The detailed approach is depicted in the following diagram:
 
 
-![Alt text](<HazardDetection-fp2 (1).png>)
+![Approach](https://github.com/amirhosseinzlf/SMARLA/assets/23516995/79a1869b-5e7f-4f13-9060-85db78215cbc)
+
 
 ![Approach4_page-0001](https://user-images.githubusercontent.com/23516995/168500802-50486e30-2c5d-43c2-a080-9cc01d964e30.jpg)
 
 
-As depicted, the main objective of SMARLA is to predict safety violaition as early as possible. The early detection of unsafe episodes is important for any safety-critical system to enable prompt corrective actions to be taken and thus prevent unsafe behavior of the agent. Our approach predicts such safety violations by monitoring the behavior of the RL agent and predicting unsafe episodes using a machine learning (ML) model based on the agent states. To train the ML model we randomly execute the RL agent and labele the episodes as safe or unsafe. Due to the large size of the state space, we rely on state abstraction to reduce the state space and enhance the learnability of our ML model. Then the model monitors the behavior of the agent and estimate the probability of encountering an unsafe state while an episode is being executed. We rely on the confidence intervals of such probability to accurately determine the optimal time step to trigger safety mechanisms. 
+As depicted, the main objective of SMARLA is to predict safety violations as early as possible. The early detection of unsafe episodes is important for any safety-critical system to enable prompt corrective actions to be taken and thus prevent unsafe behavior of the agent. Our approach predicts such safety violations by monitoring the behavior of the RL agent and predicting unsafe episodes using a machine learning (ML) model based on the agent states. To train the ML model we randomly execute the RL agent and labeled the episodes as safe or unsafe. Due to the large size of the state space, we rely on state abstraction to reduce the state space and enhance the learnability of our ML model. Then the model monitors the behavior of the agent and estimates the probability of encountering an unsafe state while an episode is being executed. We rely on the confidence intervals of such probability to accurately determine the optimal time step to trigger safety mechanisms. 
 
 Our approach can be best understood by drawing an analogy to how humans asses the risk before decision-making. In reinforcement learning (RL), the learning process is inspired by the way humans learn from their actions and their outcomes.
 Similarly, our safety monitor functions like an observant, keeping an eye on the desirability and potential consequences of different actions taken by the agent in each state. Just as we evaluate the potential outcomes of our actions to make informed decisions, the safety monitor assesses the states and actions to predict the likelihood of safety violations if the execution is continued.
@@ -65,10 +65,10 @@ Similarly, our safety monitor functions like an observant, keeping an eye on the
 
 ## Use Case 1: Cartpole
 
-We use the Cartpole environment from the OpenAI Gym library[2] as first case study. Cartpole environment is an open-source and widely used environment for RL agents.
+We use the Cartpole environment from the OpenAI Gym library[2] as the first case study. Cartpole environment is an open-source and widely used environment for RL agents.
 
-In the Cart-Pole (also known as invert pendulum), a pole is attached to a cart, which moves along a track. The movement of the cart is bidirectional so the available actions are pushing the cart to the left and right. However, the movement of the cart is restricted and the maximum rage is 2.4 from the central point. 
-The pole starts upright, and the goal is to balance it by applying two descrete actions of (1) moving the cart to the left (2) moving the cart to the right.
+In the Cart-Pole (also known as invert pendulum), a pole is attached to a cart, which moves along a track. The movement of the cart is bidirectional so the available actions are pushing the cart to the left and right. However, the movement of the cart is restricted and the maximum range is 2.4 from the central point. 
+The pole starts upright, and the goal is to balance it by applying two discrete actions of (1) moving the cart to the left and (2) moving the cart to the right.
 
 
 <p align="center" width="100%">
@@ -86,18 +86,18 @@ As depicted in the figure, the state of the system is characterized by four elem
 • The angular velocity of the pole.
 
 
-A reward of +1 in considered for each time step when the pole is still upright. 
+A reward of +1 is considered for each time step when the pole is still upright. 
 The episodes end in three cases: 
-1. The cart is away from the center with a distance more than 2.4 units
+1. The cart is away from the center with a distance of more than 2.4 units
 2. The pole’s angle is more than 12 degrees from vertical
-3. The pole remains upright during 200 time-steps.
+3. The pole remains upright during 200 time steps.
 
 
 - **safety violation:** An episode is considered unsafe if the cart moves away from the center with a distance above 2.4 units, regardless of the accumulated reward. In such a situation, the cart can pass the border and cause damage to other entities in the surroundings, which is therefore considered a safety violation.
 
 ## Use Case 2: Mountain Car
 
-In the second case study, we have a DQN agent (impelented by stable baselines[1]) in Mountain Car environment from the OpenAI Gym library[2]. Mountain car environment is an open-source and another widely used environment for RL agents
+In the second case study, we have a DQN agent (implemented by stable baselines[1]) in the Mountain Car environment from the OpenAI Gym library[2]. The mountain car environment is an open-source and another widely used environment for RL agents
 
 In the Mountain Car problem, an under-powered car is located in a valley between two hills. 
 Since the gravity is stronger than the engine of the car, the car cannot climb up the steep slope even with full throttle. The objective is to control the car and strategically use its momentum to reach the goal state on top of the right hill as soon as possible. The agent is penalized by -1 for each time step until termination. 
@@ -125,7 +125,7 @@ Episodes can have three termination scenarios:
 
 1. reaching the goal state,
 2. crossing the left border, or 
-3. exceeding the limit of200 time steps.
+3. exceeding the limit of 200 time steps.
 
 
 
@@ -133,16 +133,16 @@ Episodes can have three termination scenarios:
 
 
 ## Code Breakdown
-This project is implemented in python with Jupyter-notebook.
+This project is implemented in Python with Jupyter-notebook.
 
 
-In this replication package, we have two notebook files for each case study the first one is `SMARLA_{Case Study Name}.ipynb` which contains the implementation of safety monitor. The second one `RQ_{Case Study Name}.ipynb` is the final step to reproduce the results to answer  RQ1 - RQ2 and RQ3. However the discription and the details of RQ3 are not presented in the paper due to the space limitations. For this reason we have explaind RQ3 in details here in our replication package.
+In this replication package, we have two notebook files for each case study the first one is `SMARLA_{Case Study Name}.ipynb` which contains the implementation of the safety monitor. The second one `RQ_{Case Study Name}.ipynb` is the final step to reproduce the results to answer  RQ1 - RQ2 and RQ3. However, the description and the details of RQ3 are not presented in the paper due to space limitations. For this reason, we have explained RQ3 in detail here in our replication package.
 
 `SMARLA_{Case Study Name}.ipynb` contains the implementation of SMARLA. Safety monitoring model and Abtraction data will be generated and stored as files. 
 
-`RQ_{Case Study Name}.ipynb` transformes the episodes and analysis the performace of safety violation prediction model with different parameters, and generates plots and figures to answer RQs
+`RQ_{Case Study Name}.ipynb` transforms the episodes and analyzed the performance of the safety violation prediction model with different parameters, and generates plots and figures to answer RQs
 
-Mountain-Car folder contains the implementation of SMARLA on Mountain Car problem. Dataset and Result files follow the same structore as well. 
+The mountain-Car folder contains the implementation of SMARLA on the Mountain Car problem. Dataset and Result files follow the same structure as well. 
 
 
 
@@ -173,7 +173,7 @@ Here is the documentation on how to use this replication package.
 ### Getting Started
 
 1. Clone the repo.
-2. Download the Dataset of replication package 
+2. Download the Dataset of the replication package 
 3. Update the path to the dataset in the scripts
 4. Update the path for storing the results if needed
 5. To build the safety monitoring model on Mountain-Car: open `SMARLA_MountainCar.ipynb` and run the code. Similarly for Cart-Pole `SMARLA_CartPole.ipynb`
@@ -205,7 +205,7 @@ This is the root directory of the repository. The directory is structured as fol
   
 ### Dataset Structure 
 
-  A Dataset is provided to reproduce the results. This dataset contains our DRL agent, episodes of random testing of the agent, Abstraction files, and the safety monitoring models for each case study. Thus the dataset is devided into two parts:
+  A Dataset is provided to reproduce the results. This dataset contains our DRL agent, episodes of random testing of the agent, Abstraction files, and the safety monitoring models for each case study. Thus the dataset is divided into two parts:
   1. Cart-Pole 
   2. Mountain-Car
   
@@ -249,7 +249,7 @@ Our experimental evaluation answers the research questions below.
 *This research question aims to investigate how accurately and early our approach can predict safety violations of the RL agent during its execution. Preferably, high accuracy should be reached as early as possible before the occurrence of safety violations to enable the effective activation of safety mechanisms.*
 
 To answer this research question, we build a dataset of 1000 episodes generated by random executions. To build our ground truth, these episodes were labeled as either safe or unsafe, taking into account the presence or absence of safety violations in each episode. 
-We monitored the execution of each episode with SMARLA and at each time step. When the upper bound of the confidence interval is greater than 50% during the execution of the episode, SMARLA classifies the episode as unsafe. For each case study, we computed the number of successfully predicted safety violations, measured the prediction precision, recall, and F1-score at each time step, over the set of episodes. Results are presented in the following figures.
+We monitored the execution of each episode with SMARLA and at each time step. When the upper bound of the confidence interval is greater than 50% during the execution of the episode, SMARLA classifies the episode as unsafe. For each case study, we computed the number of successfully predicted safety violations, and measured the prediction precision, recall, and F1-score at each time step, over the set of episodes. Results are presented in the following figures.
 
 
 
@@ -327,7 +327,7 @@ Indeed, our empirical analysis revealed that abstraction levels ranging from 0.1
 **The performance of the model in operation with different abstraction levels.** This part focuses on evaluating the performance of the safety violation prediction model during the execution of episodes. We analyze how well the trained _Random Forest_ models perform in operation across different time steps while considering different abstraction levels.
 The main focus for such evaluation is the model's ability to accurately predict safety violations early. 
 
-The F1-score of the _Random Forest_ models for the two case studies, considering various levels of abstraction, are presented in Figures bellow: 
+The F1-score of the _Random Forest_ models for the two case studies, considering various levels of abstraction, are presented in the Figures below: 
 
 
 
@@ -357,7 +357,7 @@ The F1-score of the _Random Forest_ models for the two case studies, considering
 As visible, the performance of the safety violation prediction model is highly sensitive to the selected abstraction level during the training phase, especially in the case of Mountain-Car. Despite selecting only abstraction levels that maximize the model's performance during training, they required different numbers of time steps to achieve the highest accuracy in predicting safety violations. This sensitivity highlights the importance of carefully selecting the appropriate abstraction level for optimal model performance.
 
 
-Based on Figures, we observe that the most suitable abstraction level is $d=0.11$ for _Cart-Pole_  and  $d=5$ for _Mountain-Car_, as they exhibit the most accurate and earliest prediction of safety violations compared to other abstraction levels. 
+Based on the Figures, we observe that the most suitable abstraction level is $d=0.11$ for _Cart-Pole_  and  $d=5$ for _Mountain-Car_, as they exhibit the most accurate and earliest prediction of safety violations compared to other abstraction levels. 
 This indicates that these abstraction levels are particularly effective at capturing relevant features at the right level of granularity to support learning and the prediction of  unsafe episodes. 
 
 To select the best abstraction level in practice, for a given RL agent, we recommend training the safety violation prediction model with different levels of abstraction and then identifying the optimal range which corresponds to the highest F1-score after training, as described in the first part of this research question. Abstraction levels can be mapped to numbers of abstract states and this can be used to determine the abstraction level range to be explored. As a rule of thumb, to make this procedure more practical, we recommend to cover the range going from a few hundred states to around 100,000 states. However, this range is dependent on the complexity of the environment, where a more complex environment may require a larger number of abstract states to be able to accurately predict safety violations. 

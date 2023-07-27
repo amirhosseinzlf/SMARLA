@@ -25,17 +25,22 @@
 
 ## Introduction
 
-In this project, we propose a Safety Monitoring Approach for Reinforcement Learning Agents (SMARLA) to predict the safety violations. This approach effectively searches for failing executions of the agent where we have a limited testing budget. To achieve this, we rely on machine learning models to guide our search and we use a dedicated genetic algorithm to narrow the search toward faulty episodes. These episodes are sequences of states and actions produced by the DRL agent. We apply STARLA on a DQN agent trained in a Cartpole environment for 50K time steps.
+In this project, we propose a Safety Monitoring Approach for Reinforcement Learning Agents (_SMARLA_).  
+<!-- _SMARLA_ is a Safety Monitoring Approach for Reinforcement Learning Agents.  -->
+_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods~\cite{pmlr-v80-abel18a,jiang2018notes, li2006towards} to reduce the state space and thus increase the learnability of machine learning models to predict violations. We Implement SMARLA on to well-known RL benchmark problems known as Mountain-Car and Cart-Pole control problem.
+
+
+<!-- This approach effectively searches for failing executions of the agent where we have a limited testing budget. To achieve this, we rely on machine learning models to guide our search and we use a dedicated genetic algorithm to narrow the search toward faulty episodes. These episodes are sequences of states and actions produced by the DRL agent. We apply STARLA on a DQN agent trained in a Cartpole environment for 50K time steps. -->
 
 
 
 ## Publication
 This repository is a companion page for the following paper 
-> "Search-Based Testing Approach for Deep Reinforcement Learning Agents".
+> "SMARLA: A Safety Monitoring Approach for Deep Reinforcement Learning Agents".
 
-> Amirhossein Zolfagharian (uOttawa, Canada), Manel Abdellatif (uOttawa, Canada), Lionel Briand (uOttawa, Canada), Ramesh S (General Motors, USA), and Mojtaba Bagherzadeh (uOttawa, Canada)
+> Submitted to ICSE 2024 
 
-[arXiv:2206.07813](https://arxiv.org/abs/2206.07813)
+<!-- [arXiv:2206.07813](https://arxiv.org/abs/2206.07813) -->
 
 
 ## Description of the Approach

@@ -283,11 +283,10 @@ To determine the best decision criterion for triggering safety mechanisms, we co
 
 Decision criteria identify the time step when the execution should be stopped and safety mechanisms should be activated. However, note that during our test, we continue the execution of the episodes until termination in order to extract the number of time steps until termination and the true label of episodes for our analysis. 
 
-
-
+**How do the predictions based on the three above criteria compare in terms of accuracy.** Figures below present a comparison of the F1-scores of the three predictions at each time step for both case studies. 
 
 <p align="center" width="100%">
-   <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ1 Cartpole.png">
+   <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ2-Cartpole_D_0.11_F1.png">
  </p>
  <p align="center" width="50%">
    Number of detected functional faults in the Cartpole case study
@@ -295,11 +294,28 @@ Decision criteria identify the time step when the execution should be stopped an
 
 
 <p align="center" width="100%">
-    <img width="45%" src="Results/Mountain-Car/RQ1 d_5 MC.png" > 
+    <img width="45%" src="Results/Mountain-Car/RQ2 d_5-MC.png" > 
 </p>
 <p align="center" width="50%">
    Number of detected functional faults in the Mountain Car case study
 </p>
+
+
+Though there are differences in the magnitude of the trend, results from our case studies consistently show that using the upper bound is the best choice as it leads to early accurate predictions. 
+
+We computed the average improvements, in terms of time steps required to achieve peak performance, when predicting safety violations by considering the upper bound of the confidence interval, in contrast to (1) the output probability and (2) the lower bound of the confidence interval. 
+Our findings indicate that using the upper bound of the confidence intervals results in an average improvement of 17\% for Cart-Pole and 10\% for Mountain-Car, in terms of prediction time for safety violations, as compared to using the predicted probability. When compared to using the lower bound, the improvement is 25\% for Cart-Pole and 28\% for Mountain-Car.
+
+We also investigated in both case studies three important metrics: (1) the decision time step, (2) the remaining time steps until the occurrence of a safety violation, and (3) the remaining percentage of time steps to execute until violation. For each metric, we present in the Table below the minimum, maximum, and average values.
+
+<p align="center" width="100%">
+    <img width="100%" src="Results/Table.JPG" > 
+</p>
+
+
+To summarize, while relying on the upper bound of confidence intervals leads to an earlier prediction of safety violations, it also introduces a higher rate of false positives compared to using the predicted probability and the lower bound. Therefore, considering the trade-off between earlier detection of safety violations and the number of false positives, the selection of an appropriate decision criterion relies heavily on the level of criticality of the RL agent. For instance, in certain scenarios, prioritizing early detection of safety violations and allowing for a longer time frame to apply safety mechanisms may be of critical importance, even at the expense of a slightly higher false positive rate. Conversely, in other cases, there might be a preference to sacrifice time in order to optimize accuracy and minimize the occurrence of false positives. The selection of the appropriate decision criterion depends on the specific context and the relative importance of early detection and prediction accuracy. In our case studies, the increase in false positives appears to be limited, and therefore using the upper bound is the best option. 
+
+**Answer:** Considering the upper bound of the confidence intervals leads to a significantly earlier and still highly accurate detection of safety violations. This provides a longer time frame for the system to apply preventive safety measures and mitigate potential damages. This, however, comes at the expense of a slightly higher false positive rate.
 
 
 ## RQ3. What is the effect of the abstraction level on the safety monitoring component?

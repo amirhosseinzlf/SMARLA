@@ -363,13 +363,13 @@ The F1-score of the _Random Forest_ models for the two case studies, considering
 
 
 <p align="center" width="100%">
-    <img width="100%" src="Results/Cart-Pole/RQ3 Cartpole .png"> 
+    <img width="45%" src="Results/Cart-Pole/RQ3 Cartpole .png"> 
 </p>
 
 
 
 <p align="center" width="100%">
-    <img width="100%" src="Results/Mountain-Car/RQ3_MC.png"> 
+    <img width="45%" src="Results/Mountain-Car/RQ3_MC.png"> 
 </p>
 
 
@@ -397,7 +397,4 @@ References
 
 2- [gym](https://github.com/openai/gym)
 
-3- [MOSA](https://ieeexplore.ieee.org/document/7840029)
-
-4- [virtual vs. real:Trading off simulations and physical experiments in reinforcement learning with Bayesian optimization](https://dl.acm.org/doi/abs/10.1109/ICRA.2017.7989186)
 

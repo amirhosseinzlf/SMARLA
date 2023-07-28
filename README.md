@@ -25,7 +25,7 @@
 
 In this project, we propose a Safety Monitoring Approach for Reinforcement Learning Agents (_SMARLA_).  
 <!-- _SMARLA_ is a Safety Monitoring Approach for Reinforcement Learning Agents.  -->
-_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods~\cite{pmlr-v80-abel18a,jiang2018notes, li2006towards} to reduce the state space and thus increase the learnability of machine learning models to predict violations. We Implement SMARLA on to well-known RL benchmark problems known as Mountain-Car and Cart-Pole control problems.
+_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods to reduce the state space and thus increase the learnability of machine learning models to predict violations. We Implement SMARLA on to well-known RL benchmark problems known as Mountain-Car and Cart-Pole control problems.
 
 
 <!-- This approach effectively searches for failing executions of the agent where we have a limited testing budget. To achieve this, we rely on machine learning models to guide our search and we use a dedicated genetic algorithm to narrow the search toward faulty episodes. These episodes are sequences of states and actions produced by the DRL agent. We apply STARLA on a DQN agent trained in a Cartpole environment for 50K time steps. -->
@@ -271,14 +271,14 @@ We monitored the execution of each episode with SMARLA and at each time step. Wh
 ## RQ2. How can the safety monitor determine when to trust the prediction of safety violations?
 *In this research question, we investigate the use of confidence intervals as a mechanism for the safety monitor to determine the appropriate time step to trigger safety mechanisms.*
 
-This investigation is based on the same set of episodes randomly generated for RQ1. At each time step $t$, we collect the predicted probability of safety violation $P_{e_i}(t)$ and the corresponding confidence interval $[Low(t),Up(t)]$. The lower bound ($Low(t)$) and upper bound($Up(t)$) of the confidence interval are computed using the methodology detailed in the approach section in the paper. 
+This investigation is based on the same set of episodes randomly generated for RQ1. At each time step t, we collect the predicted probability of safety violation P_{e_i}(t) and the corresponding confidence interval [Low(t),Up(t)]. The lower bound (Low(t)) and upper bound(Up(t)) of the confidence interval are computed using the methodology detailed in the approach section in the paper. 
 
 
 
 To determine the best decision criterion for triggering safety mechanisms, we considered and compared the following alternative criteria:
-- If the probability of safety violation, $P_{e_i}(t)$, is equal to or greater than 50\%, then the safety mechanism is activated.
-- If the upper bound of the confidence interval at time step $t$ (based on the confidence level of 95\%) is above 50\% (i.e., $Up(t) \geq 50\%$), then the safety mechanism is activated. This is a conservative approach as the actual probability has a 97.5\% chance to be below that value. This may result in many false positives but it leads to early predictions of unsafe episodes and is unlikely to miss any unsafe episodes.
-- If the lower bound of the confidence intervals at time step $t$ is above 50\% (i.e., $Low(t) \geq 50\%$), then the safety mechanism is activated. In this criterion, the actual probability has only a 2.5\% chance to be below that bound and we thus minimize the occurrence of false positives, at the cost of relatively late detection of unsafe episodes and more false negatives. 
+- If the probability of safety violation, P_{e_i}(t), is equal to or greater than 50\%, then the safety mechanism is activated.
+- If the upper bound of the confidence interval at time step t (based on the confidence level of 95\%) is above 50\% (i.e., Up(t) \geq 50\%), then the safety mechanism is activated. This is a conservative approach as the actual probability has a 97.5\% chance to be below that value. This may result in many false positives but it leads to early predictions of unsafe episodes and is unlikely to miss any unsafe episodes.
+- If the lower bound of the confidence intervals at time step t is above 50\% (i.e., Low(t) \geq 50\%), then the safety mechanism is activated. In this criterion, the actual probability has only a 2.5\% chance to be below that bound and we thus minimize the occurrence of false positives, at the cost of relatively late detection of unsafe episodes and more false negatives. 
 
 
 Decision criteria identify the time step when the execution should be stopped and safety mechanisms should be activated. However, note that during our test, we continue the execution of the episodes until termination in order to extract the number of time steps until termination and the true label of episodes for our analysis. 
@@ -326,7 +326,7 @@ Our goal is to gain insights into the possible trade-offs between the size of th
 To answer this research question, we studied how different levels of state abstraction affect the performance of the safety violation prediction model in the training phase and in operation.
 
 
-**The accuracy of the Random Forest model after training with different abstraction levels.** This aspect involves evaluating the performance of the Random Forest model once it has been trained on the available training data. To build our dataset, we sampled 2200 episodes through random execution of the RL agent, including 215 unsafe episodes for Cart-Pole and 279 unsafe episodes for Mountain-Car. We randomly sampled 70% of the dataset to train and 30% to compute the F1-scores of the models using different levels of abstraction $d$.
+**The accuracy of the Random Forest model after training with different abstraction levels.** This aspect involves evaluating the performance of the Random Forest model once it has been trained on the available training data. To build our dataset, we sampled 2200 episodes through random execution of the RL agent, including 215 unsafe episodes for Cart-Pole and 279 unsafe episodes for Mountain-Car. We randomly sampled 70% of the dataset to train and 30% to compute the F1-scores of the models using different levels of abstraction d.
 
 A lower abstraction level implies finer-grained states, while higher abstraction levels represent coarser ones that lead to a smaller feature space.
 
@@ -378,7 +378,7 @@ The F1-score of the _Random Forest_ models for the two case studies, considering
 As visible, the performance of the safety violation prediction model is highly sensitive to the selected abstraction level during the training phase, especially in the case of Mountain-Car. Despite selecting only abstraction levels that maximize the model's performance during training, they required different numbers of time steps to achieve the highest accuracy in predicting safety violations. This sensitivity highlights the importance of carefully selecting the appropriate abstraction level for optimal model performance.
 
 
-Based on the Figures, we observe that the most suitable abstraction level is $d=0.11$ for _Cart-Pole_  and  $d=5$ for _Mountain-Car_, as they exhibit the most accurate and earliest prediction of safety violations compared to other abstraction levels. 
+Based on the Figures, we observe that the most suitable abstraction level is d=0.11 for _Cart-Pole_  and  d=5 for _Mountain-Car_, as they exhibit the most accurate and earliest prediction of safety violations compared to other abstraction levels. 
 This indicates that these abstraction levels are particularly effective at capturing relevant features at the right level of granularity to support learning and the prediction of  unsafe episodes. 
 
 To select the best abstraction level in practice, for a given RL agent, we recommend training the safety violation prediction model with different levels of abstraction and then identifying the optimal range which corresponds to the highest F1-score after training, as described in the first part of this research question. Abstraction levels can be mapped to numbers of abstract states and this can be used to determine the abstraction level range to be explored. As a rule of thumb, to make this procedure more practical, we recommend to cover the range going from a few hundred states to around 100,000 states. However, this range is dependent on the complexity of the environment, where a more complex environment may require a larger number of abstract states to be able to accurately predict safety violations. 

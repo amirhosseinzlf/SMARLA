@@ -22,16 +22,12 @@
 
 In this project, we propose a Safety Monitoring Approach for Reinforcement Learning Agents (_SMARLA_).  
 <!-- _SMARLA_ is a Safety Monitoring Approach for Reinforcement Learning Agents.  -->
-_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods to reduce the state space and thus increase the learnability of machine learning models to predict violations. We Implement SMARLA on to well-known RL benchmark problems known as Mountain-Car and Cart-Pole control problems.
-
-
-<!-- This approach effectively searches for failing executions of the agent where we have a limited testing budget. To achieve this, we rely on machine learning models to guide our search and we use a dedicated genetic algorithm to narrow the search toward faulty episodes. These episodes are sequences of states and actions produced by the DRL agent. We apply STARLA on a DQN agent trained in a Cartpole environment for 50K time steps. -->
-
+_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods to reduce the state space and thus increase the learnability of machine learning models to predict violations. We Implement SMARLA on two well-known RL benchmark problems known as Mountain-Car and Cart-Pole control problems.
 
 
 ## Publication
 This repository is a companion page for the following paper 
-> "SMARLA: A Safety Monitoring Approach for Deep Reinforcement Learning Agents".
+> SMARLA: A Safety Monitoring Approach for Deep Reinforcement Learning Agents
 
 > Submitted to ICSE 2024 
 
@@ -58,7 +54,7 @@ Similarly, our safety monitor functions like an observant, keeping an eye on the
 
 ## Use Case 1: Cartpole
 
-We use the Cartpole environment from the OpenAI Gym library[2] as the first case study. Cartpole environment is an open-source and widely used environment for RL agents.
+We considered a DQN agent (implemented by stable baselines[1]) on the Cartpole environment from the OpenAI Gym library[2] as the first case study. Cartpole environment is an open-source and widely used environment for RL agents.
 
 In the Cart-Pole (also known as invert pendulum), a pole is attached to a cart, which moves along a track. The movement of the cart is bidirectional so the available actions are pushing the cart to the left and right. However, the movement of the cart is restricted and the maximum range is 2.4 from the central point. 
 The pole starts upright, and the goal is to balance it by applying two discrete actions of (1) moving the cart to the left and (2) moving the cart to the right.
@@ -135,7 +131,7 @@ In this replication package, we have two notebook files for each case study the 
 
 `RQ_{Case Study Name}.ipynb` transforms the episodes and analyzed the performance of the safety violation prediction model with different parameters, and generates plots and figures to answer RQs
 
-The mountain-Car folder contains the implementation of SMARLA on the Mountain Car problem. Dataset and Result files follow the same structure as well. 
+The Mountain-Car folder contains the implementation of SMARLA on the Mountain Car problem. Dataset and Result files follow the same structure as well. 
 
 
 
@@ -214,7 +210,7 @@ This is the root directory of the repository. The directory is structured as fol
      |
      |--- /ABS/                                                Abstraction data     
      |
-     |--- /ML_models/                                          ML based safety monitoring models
+     |--- /ML_models/                                          ML-based safety monitoring models
      |
      |
      |
@@ -226,7 +222,7 @@ This is the root directory of the repository. The directory is structured as fol
      |
      |--- /Abstraction/                                        Abstraction data     
      |
-     |--- /ML_models/                                          ML based safety monitoring models                 
+     |--- /ML_models/                                          ML-based safety monitoring models                 
      
 ----------------
      
@@ -268,7 +264,7 @@ We monitored the execution of each episode with SMARLA and at each time step. Wh
 ## RQ2. How can the safety monitor determine when to trust the prediction of safety violations?
 *In this research question, we investigate the use of confidence intervals as a mechanism for the safety monitor to determine the appropriate time step to trigger safety mechanisms.*
 
-This investigation is based on the same set of episodes randomly generated for RQ1. At each time step t, we collect the predicted probability of safety violation P_{e_i}(t) and the corresponding confidence interval [Low(t),Up(t)]. The lower bound (Low(t)) and upper bound(Up(t)) of the confidence interval are computed using the methodology detailed in the approach section in the paper. 
+This investigation is based on the same set of episodes randomly generated for RQ1. At each time step t, we collect the predicted probability of safety violation P_{e_i}(t) and the corresponding confidence interval [Low(t),Up(t)]. The lower bound (Low(t)) and upper bound(Up(t)) of the confidence interval are computed using the methodology detailed in the approach section of the paper. 
 
 
 
@@ -280,7 +276,7 @@ To determine the best decision criterion for triggering safety mechanisms, we co
 
 Decision criteria identify the time step when the execution should be stopped and safety mechanisms should be activated. However, note that during our test, we continue the execution of the episodes until termination in order to extract the number of time steps until termination and the true label of episodes for our analysis. 
 
-**How do the predictions based on the three above criteria compare in terms of accuracy.** Figures below present a comparison of the F1-scores of the three predictions at each time step for both case studies. 
+**How do the predictions based on the three above criteria compare in terms of accuracy?** Figures below present a comparison of the F1-scores of the three predictions at each time step for both case studies. 
 
 <p align="center" width="100%">
    <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ2-Cartpole_D_0.11_F1.png">
@@ -317,19 +313,21 @@ To summarize, while relying on the upper bound of confidence intervals leads to 
 
 ## RQ3. What is the effect of the abstraction level on the safety monitoring component?
 
-*We aim in this research question to investigate if and how different levels of state abstraction affect the safety violation prediction capabilities of the model. Specifically, we want to study the impact of state abstraction levels on (1) the accuracy of the safety violation prediction model after training, and (2) the accuracy of the ML model in operation.
-Our goal is to gain insights into the possible trade-offs between the size of the feature space and the granularity of information captured by features, both determined by the abstraction level. Such an analysis aims to provide guidance in selecting proper abstraction levels in practice.*
+*We aim to investigate if and how different levels of state abstraction can affect safety violation prediction. Specifically, we want to study the impact of state abstraction levels on (1) the accuracy of the safety violation prediction model after training, and (2) the accuracy of the ML model in operation.
+Our goal is to understand the possible trade-offs between the size of the feature space and the granularity of information captured by features, both determined by the abstraction level. In order to provide guidance in selecting proper abstraction levels in practice.*
 
 To answer this research question, we studied how different levels of state abstraction affect the performance of the safety violation prediction model in the training phase and in operation.
 
 
-**The accuracy of the Random Forest model after training with different abstraction levels.** This aspect involves evaluating the performance of the Random Forest model once it has been trained on the available training data. To build our dataset, we sampled 2200 episodes through random execution of the RL agent, including 215 unsafe episodes for Cart-Pole and 279 unsafe episodes for Mountain-Car. We randomly sampled 70% of the dataset to train and 30% to compute the F1-scores of the models using different levels of abstraction d.
+**The accuracy of the safety monitor after training with different abstraction levels.** This section entails the assessment of the safety monitor's performance after training. For the training dataset, we generated 2200 episodes by random execution of the RL agent (the training dataset contains 215 unsafe episodes for the Cart-Pole environment and 279 unsafe episodes for the Mountain-Car environment). Subsequently, 70% of the dataset was randomly selected for training purposes, while the remaining 30% was used for computing the F1 scores of the models at various levels of abstraction denoted by d.
 
 A lower abstraction level implies finer-grained states, while higher abstraction levels represent coarser ones that lead to a smaller feature space.
 
-Based on the analysis, we observed that higher abstraction levels lead to lower accuracy in predicting safety violations, above a threshold of 0.3 for Cart-Pole and 1000 for Mountain-Car. This is attributed to the smaller feature space associated with higher levels of abstraction. As the abstraction level decreases, the feature space grows larger, allowing for more precise information to be captured by features. Consequently, the accuracy of the safety violation prediction model tends to increase until it eventually plateaus and then starts to decrease. This decrease occurs due to the very large number of abstract states, making it more challenging to learn in a larger feature space.
-This suggests that there is an optimal range of abstraction that yields the highest accuracy in predicting safety violations. Going beyond this optimal range can reduce the performance of safety monitoring. This optimal range of abstraction level depends on the environment, the RL agent, and the reward. This arises from the fact that the calculation of Q-values, which are used in the abstraction process, relies heavily on the reward signal. Consequently, the choice of reward function significantly influences the optimal range of abstraction levels.
-Indeed, our empirical analysis revealed that abstraction levels ranging from 0.1 to 0.3 result in the highest accuracy for Cart-Pole while for Mountain-Car,  abstraction levels from 0.5 to 1000 result in the highest accuracy. Therefore, for the next experiments, we consider the abstraction levels within the optimal ranges of each case study. 
+Based on the analysis, we observed that higher abstraction levels (coarser abstraction levels) lead to lower accuracy, for example above 0.3 for Cart-Pole and 1000 for Mountain-Car the accuracy starts decreasing. This is because of the smaller feature space as a result of higher abstraction levels. As the abstraction level decreases, the feature space gets larger and can capture more precise information by features. Thus, the accuracy increases until it plateaus and then starts to decrease. This decrease is related to the very large number of abstract states and the difficulty of learning from large feature space.
+
+Consequently, there is an optimal range of abstraction that results in the highest accuracy in predicting safety violations. This optimal range of abstraction level depends on the environment, the RL agent, and the reward. The computation of Q-values relies on the reward signal, and the abstraction process utilizes the Q-values. Consequently, the difference in the reward function significantly influences the optimal range of abstraction levels.
+
+Our analysis revealed that abstraction levels ranging from 0.1 to 0.3 result in the highest accuracy for Cart-Pole while for Mountain-Car, abstraction levels from 0.5 to 1000 result in the highest accuracy. We consider the abstraction levels within such optimal ranges of each case study for the next experiment. 
 
 <!-- <p align="center" width="100%">
     <img width="50%" src="https://user-images.githubusercontent.com/23516995/169616496-bebacddf-cb97-4ab3-bcf9-cfb8b654a4ee.png"> 
@@ -350,10 +348,10 @@ Indeed, our empirical analysis revealed that abstraction levels ranging from 0.1
 </p>
 
 
-**The performance of the model in operation with different abstraction levels.** This part focuses on evaluating the performance of the safety violation prediction model during the execution of episodes. We analyze how well the trained _Random Forest_ models perform in operation across different time steps while considering different abstraction levels.
-The main focus for such evaluation is the model's ability to accurately predict safety violations early. 
+**The performance of the model in operation with different abstraction levels.** This part focuses on evaluating the performance of the safety violation prediction model during the execution of episodes. We analyze how well the trained models perform in operation in different time steps, considering different abstraction levels within the optimal range of abstraction levels.
+The main focus is to assess the model's ability to accurately predict safety violations early. 
 
-The F1-score of the _Random Forest_ models for the two case studies, considering various levels of abstraction, are presented in the Figures below: 
+The F1-score of the safety violation prediction models for the two case studies, considering various levels of abstraction, are presented in the Figures below: 
 
 
 
@@ -372,15 +370,13 @@ The F1-score of the _Random Forest_ models for the two case studies, considering
 
 
 
-As visible, the performance of the safety violation prediction model is highly sensitive to the selected abstraction level during the training phase, especially in the case of Mountain-Car. Despite selecting only abstraction levels that maximize the model's performance during training, they required different numbers of time steps to achieve the highest accuracy in predicting safety violations. This sensitivity highlights the importance of carefully selecting the appropriate abstraction level for optimal model performance.
+As the results suggest, the safety violation prediction model's performance is highly sensitive to the selected abstraction level, especially in the case of Mountain-Car. Despite selecting only abstraction levels that maximize the performance of the model, they required different numbers of time steps to achieve their peak performance in predicting safety violations. This sensitivity highlights the importance of carefully selecting the appropriate abstraction level for early and accurate prediction of safety violations.
+
+We also observe that the most suitable abstraction level is d=0.11 for _Cart-Pole_  and  d=5 for _Mountain-Car_, as they result in the most accurate and earliest prediction of safety violations compared to other abstraction levels. 
 
 
-Based on the Figures, we observe that the most suitable abstraction level is d=0.11 for _Cart-Pole_  and  d=5 for _Mountain-Car_, as they exhibit the most accurate and earliest prediction of safety violations compared to other abstraction levels. 
-This indicates that these abstraction levels are particularly effective at capturing relevant features at the right level of granularity to support learning and the prediction of  unsafe episodes. 
 
-To select the best abstraction level in practice, for a given RL agent, we recommend training the safety violation prediction model with different levels of abstraction and then identifying the optimal range which corresponds to the highest F1-score after training, as described in the first part of this research question. Abstraction levels can be mapped to numbers of abstract states and this can be used to determine the abstraction level range to be explored. As a rule of thumb, to make this procedure more practical, we recommend to cover the range going from a few hundred states to around 100,000 states. However, this range is dependent on the complexity of the environment, where a more complex environment may require a larger number of abstract states to be able to accurately predict safety violations. 
-
-Within the optimal range, we further analyze the time steps at which the safety monitor reaches its peak performance in operation. Therefore, we should try different abstraction levels within the optimal range when using the safety violation prediction model during the execution of episodes. The goal is to identify the level of abstraction that enables the safety monitor to reach its highest performance in predicting safety violations at the earliest time step possible. 
+To select the best abstraction level in practice we recommend following the two-step process detailed in section IV.C.3 of the paper. which could be summarised as, (1) training the safety violation prediction model with different levels of abstraction (covering abstraction levels with a few hundred to 100,000 states) (2) identifying the optimal range which corresponds to the highest F1-score after training (3) Within the optimal range, analyzing the time steps at which the safety monitor reaches its peak performance in operation. The goal is to identify the level of abstraction that enables the safety monitor to reach its highest performance in predicting safety violations at the earliest time step possible. 
 
 
 

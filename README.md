@@ -41,7 +41,9 @@ The detailed approach is depicted in the following diagram:
 
 
 ![Approach](/Results/Approach.png)
-
+<p align="center" width="50%">
+   Approach overview
+</p>
 
 
 As depicted, the main objective of SMARLA is to predict safety violations as early as possible. The early detection of unsafe episodes is important for any safety-critical system to enable prompt corrective actions to be taken and thus prevent unsafe behavior of the agent. Our approach predicts such safety violations by monitoring the behavior of the RL agent and predicting unsafe episodes using a machine learning (ML) model based on the agent states. To train the ML model we randomly execute the RL agent and labeled the episodes as safe or unsafe. Due to the large size of the state space, we rely on state abstraction to reduce the state space and enhance the learnability of our ML model. Then the model monitors the behavior of the agent and estimates the probability of encountering an unsafe state while an episode is being executed. We rely on the confidence intervals of such probability to accurately determine the optimal time step to trigger safety mechanisms. 
@@ -63,6 +65,9 @@ The pole starts upright, and the goal is to balance it by applying two discrete 
 <div align="center">
     <img src="Results/Cart-Pole/Cart-pole.png" width="40%" /> 
 </div>
+<p align="center" width="50%">
+   Cart-Pole case study
+</p>
 
 As depicted in the figure, the state of the system is characterized by four elements:
 
@@ -94,6 +99,9 @@ Since the gravity is stronger than the engine of the car, the car cannot climb u
 
 <p align="center" width="100%">
     <img width="40%" src="Results/Mountain-Car/Mountain-car.png"> 
+</p>
+<p align="center" width="50%">
+   Mountian-Car case study
 </p>
 
 The state of the agent is defined based on:
@@ -242,20 +250,23 @@ We monitored the execution of each episode with SMARLA and at each time step. Wh
 
 
 
-<p align="center" width="100%">
-   <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ1 Cartpole.png">
- </p>
- <p align="center" width="50%">
-   Number of detected functional faults in the Cartpole case study
-</p>
-
 
 <p align="center" width="100%">
     <img width="45%" src="Results/Mountain-Car/RQ1 d_5 MC.png" > 
 </p>
 <p align="center" width="50%">
-   Number of detected functional faults in the Mountain Car case study
+   Performance of the safety violation prediction model in Mountian-Car
 </p>
+
+<p align="center" width="100%">
+   <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ1 Cartpole.png">
+ </p>
+ <p align="center" width="50%">
+   Performance of the safety violation prediction model in Cart-Pole
+</p>
+
+
+
 
 
 **Answer:** SMARLA demonstrated high accuracy in predicting safety violations from RL agents. Moreover, such accurate predictions can be obtained early during the execution of episodes, thus enabling the system to prevent or mitigate damages. 
@@ -278,20 +289,25 @@ Decision criteria identify the time step when the execution should be stopped an
 
 **How do the predictions based on the three above criteria compare in terms of accuracy?** Figures below present a comparison of the F1-scores of the three predictions at each time step for both case studies. 
 
-<p align="center" width="100%">
-   <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ2-Cartpole_D_0.11_F1.png">
- </p>
- <p align="center" width="50%">
-   Number of detected functional faults in the Cartpole case study
-</p>
 
 
 <p align="center" width="100%">
     <img width="45%" src="Results/Mountain-Car/RQ2 d_5-MC.png" > 
 </p>
 <p align="center" width="50%">
-   Number of detected functional faults in the Mountain Car case study
+   F1-score of the safety violation prediction model for different decision criteria in the Mountain-Car case study
 </p>
+
+
+<p align="center" width="100%">
+   <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ2-Cartpole_D_0.11_F1.png">
+ </p>
+ <p align="center" width="50%">
+   F1-score of the safety violation prediction model for different decision criteria in the Cart_Pole case study
+</p>
+
+
+
 
 
 Though there are differences in the magnitude of the trend, results from our case studies consistently show that using the upper bound is the best choice as it leads to early accurate predictions. 
@@ -332,21 +348,24 @@ Our analysis revealed that abstraction levels ranging from 0.1 to 0.3 result in 
 <!-- <p align="center" width="100%">
     <img width="50%" src="https://user-images.githubusercontent.com/23516995/169616496-bebacddf-cb97-4ab3-bcf9-cfb8b654a4ee.png"> 
 </p> -->
+<p align="center" width="100%">
+   <img width="50%" alt="CartPole" src="Results/Mountain-Car/RQ3-MC- abstraction.png">
+ </p>
+ <p align="center" width="50%">
+   Mountain-Car case study
+</p>
 
 <p align="center" width="100%">
     <img width="50%" src="Results/Cart-Pole/Picture17.png" > 
 </p>
 <p align="center" width="50%">
-   Accuracy of the fault detection rules in the Cartpole case study
+   Cart-Pole case study
 </p>
 
-<p align="center" width="100%">
-   <img width="50%" alt="CartPole" src="Results/Mountain-Car/RQ3-MC- abstraction.png">
- </p>
+
  <p align="center" width="50%">
-   Accuracy of the fault detection rulesin the Mountain Car case study
+   Precision, recall, and F1-score achieved after the training of the safety violation prediction model and the number of abstract states across different abstraction levels
 </p>
-
 
 **The performance of the model in operation with different abstraction levels.** This part focuses on evaluating the performance of the safety violation prediction model during the execution of episodes. We analyze how well the trained models perform in operation in different time steps, considering different abstraction levels within the optimal range of abstraction levels.
 The main focus is to assess the model's ability to accurately predict safety violations early. 
@@ -360,11 +379,22 @@ The F1-score of the safety violation prediction models for the two case studies,
 <p align="center" width="100%">
     <img width="45%" src="Results/Cart-Pole/RQ3 Cartpole .png"> 
 </p>
+<p align="center" width="50%">
+   Cart-Pole case study
+</p>
 
 
 
 <p align="center" width="100%">
     <img width="45%" src="Results/Mountain-Car/RQ3_MC.png"> 
+</p>
+
+<p align="center" width="50%">
+   Mountain-Car case study
+</p>
+
+<p align="center" width="50%">
+   Performance of the safety violation prediction models in operation across different levels of abstraction
 </p>
 
 

@@ -54,9 +54,9 @@ Similarly, our safety monitor functions like an observant, keeping an eye on the
 
 # Use cases
 
-## Use Case 1: Cartpole
+## Use Case 1: Cart-Pole
 
-We considered a DQN agent (implemented by stable baselines[1]) on the Cartpole environment from the OpenAI Gym library[2] as the first case study. Cartpole environment is an open-source and widely used environment for RL agents.
+We considered a DQN agent (implemented by stable baselines[1]) on the Cart-Pole environment from the OpenAI Gym library[2] as the first case study. Cart-Pole environment is an open-source and widely used environment for RL agents.
 
 In the Cart-Pole (also known as invert pendulum), a pole is attached to a cart, which moves along a track. The movement of the cart is bidirectional so the available actions are pushing the cart to the left and right. However, the movement of the cart is restricted and the maximum range is 2.4 from the central point. 
 The pole starts upright, and the goal is to balance it by applying two discrete actions of (1) moving the cart to the left and (2) moving the cart to the right.
@@ -73,7 +73,7 @@ As depicted in the figure, the state of the system is characterized by four elem
 
 • The position of the cart.
 
-• The velocity of the cart.
+• The velocity of the .
 
 • The angle of the pole.
 
@@ -303,7 +303,7 @@ Decision criteria identify the time step when the execution should be stopped an
    <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ2-Cartpole_D_0.11_F1.png">
  </p>
  <p align="center" width="50%">
-   F1-score of the safety violation prediction model for different decision criteria in the Cart_Pole case study
+   F1-score of the safety violation prediction model for different decision criteria in the Cart-Pole case study
 </p>
 
 

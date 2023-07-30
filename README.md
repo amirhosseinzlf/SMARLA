@@ -324,8 +324,7 @@ In summary, Using the upper bound of confidence intervals results in an earlier 
 Selecting the suitable decision criterion depends on the context and the trade-off between the importance of early detection and prediction accuracy. In our case studies, we observed that the increase in false positives remained limited, so using the upper bound was the best option.
 
 
-**Answer:** Considering the upper bound of the confidence intervals leads to significantly earlier and still highly accurate detection of safety violations. This provides a longer time frame for the system to apply preventive safety measures and mitigate potential damages. This, however, comes at the expense of a slightly higher false positive rate.
-
+**Answer:** Considering the upper bound of the confidence intervals, we achieve significantly earlier and highly accurate detection of safety violations. This allows the system to have a longer time frame to implement preventive or corrective safety mechanisms. However, it comes at the expense of having a slightly higher false positive rate.
 
 ## RQ3. What is the effect of the abstraction level on the safety monitoring component?
 

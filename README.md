@@ -308,21 +308,23 @@ It is important to note that the decision criteria identify the time step at whi
 
 
 
-Though there are differences in the magnitude of the trend, results from our case studies consistently show that using the upper bound is the best choice as it leads to early accurate predictions. 
+Results from both case studies show that using the upper bound is the best choice as it leads to early and accurate predictions. 
 
-We computed the average improvements, in terms of time steps required to achieve peak performance, when predicting safety violations by considering the upper bound of the confidence interval, in contrast to (1) the output probability and (2) the lower bound of the confidence interval. 
-Our findings indicate that using the upper bound of the confidence intervals results in an average improvement of 17\% for Cart-Pole and 10\% for Mountain-Car, in terms of prediction time for safety violations, as compared to using the predicted probability. When compared to using the lower bound, the improvement is 25\% for Cart-Pole and 28\% for Mountain-Car.
+We investigated the average improvements, in terms of time steps required to achieve peak performance, when predicting safety violations based on the upper bound of the confidence interval, compared to (1) the output probability and (2) the lower bound of the confidence interval. 
+Results show that using the upper bound of the confidence intervals reduces the time steps required to achieve peak performance, on average 17\% for Cart-Pole and 11\% for Mountain-Car, compared to using the predicted probability. The improvement is 25\% for Cart-Pole and 28\% for Mountain-Car when compared to using the lower bound.
 
-We also investigated in both case studies three important metrics: (1) the decision time step, (2) the remaining time steps until the occurrence of a safety violation, and (3) the remaining percentage of time steps to execute until violation. For each metric, we present in the Table below the minimum, maximum, and average values.
+Furthermore, investigated three important metrics: (1) the decision time step, (2) the remaining time steps until the safety violation, and (3) the remaining percentage of time steps to execute. We presented in the Table below the minimum, maximum, and average values for each metric.
 
 <p align="center" width="100%">
     <img width="100%" src="Results/Table.JPG" > 
 </p>
 
 
-To summarize, while relying on the upper bound of confidence intervals leads to an earlier prediction of safety violations, it also introduces a higher rate of false positives compared to using the predicted probability and the lower bound. Therefore, considering the trade-off between earlier detection of safety violations and the number of false positives, the selection of an appropriate decision criterion relies heavily on the level of criticality of the RL agent. For instance, in certain scenarios, prioritizing early detection of safety violations and allowing for a longer time frame to apply safety mechanisms may be of critical importance, even at the expense of a slightly higher false positive rate. Conversely, in other cases, there might be a preference to sacrifice time in order to optimize accuracy and minimize the occurrence of false positives. The selection of the appropriate decision criterion depends on the specific context and the relative importance of early detection and prediction accuracy. In our case studies, the increase in false positives appears to be limited, and therefore using the upper bound is the best option. 
+In summary, Using the upper bound of confidence intervals results in an earlier prediction of safety violations, however, it introduces a higher rate of false positives compared to the predicted probability and the lower bound. Given the trade-off between early detection of safety violations and false positives, the choice of an appropriate decision criterion relies on the RL agent's level of criticality. For certain scenarios, prioritizing early detection of safety violations and allowing for a longer time frame to implement safety mechanisms is highly crucial, even if it leads to a slightly higher false positive rate. On the other hand, in different situations, there might be a preference to sacrifice time to improve accuracy and minimize false positives.
+Selecting the suitable decision criterion depends on the context and the trade-off between the importance of early detection and prediction accuracy. In our case studies, we observed that the increase in false positives remained limited, so using the upper bound was the best option.
 
-**Answer:** Considering the upper bound of the confidence intervals leads to a significantly earlier and still highly accurate detection of safety violations. This provides a longer time frame for the system to apply preventive safety measures and mitigate potential damages. This, however, comes at the expense of a slightly higher false positive rate.
+
+**Answer:** Considering the upper bound of the confidence intervals leads to significantly earlier and still highly accurate detection of safety violations. This provides a longer time frame for the system to apply preventive safety measures and mitigate potential damages. This, however, comes at the expense of a slightly higher false positive rate.
 
 
 ## RQ3. What is the effect of the abstraction level on the safety monitoring component?

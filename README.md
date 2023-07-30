@@ -273,19 +273,17 @@ We monitored the execution of each episode with SMARLA and at each time step. Wh
 
 
 ## RQ2. How can the safety monitor determine when to trust the prediction of safety violations?
-*In this research question, we investigate the use of confidence intervals as a mechanism for the safety monitor to determine the appropriate time step to trigger safety mechanisms.*
+*In this research question, the focus is on investigating the use of confidence intervals as a means for the safety monitor to determine the appropriate time step to trigger safety mechanisms.* 
 
-This investigation is based on the same set of episodes randomly generated for RQ1. At each time step t, we collect the predicted probability of safety violation P_{e_i}(t) and the corresponding confidence interval [Low(t),Up(t)]. The lower bound (Low(t)) and upper bound(Up(t)) of the confidence interval are computed using the methodology detailed in the approach section of the paper. 
+The investigation is conducted using the same set of randomly generated episodes as in RQ1. At each time step, the predicted probability of safety violation, denoted as P_{e_i}(t), is collected along with the corresponding confidence interval Low(t), Up(t). The lower bound (Low(t)) and upper bound (Up(t)) of the confidence interval are computed using the methodology described in the approach section of the paper.
 
 
-
-To determine the best decision criterion for triggering safety mechanisms, we considered and compared the following alternative criteria:
+We considered and compared the following three alternative decision criteria for triggering safety mechanisms:
 - If the probability of safety violation, P_{e_i}(t), is equal to or greater than 50\%, then the safety mechanism is activated.
-- If the upper bound of the confidence interval at time step t (based on the confidence level of 95\%) is above 50\% (i.e., Up(t) >= 50\%), then the safety mechanism is activated. This is a conservative approach as the actual probability has a 97.5\% chance to be below that value. This may result in many false positives but it leads to early predictions of unsafe episodes and is unlikely to miss any unsafe episodes.
-- If the lower bound of the confidence intervals at time step t is above 50\% (i.e., Low(t) >= 50\%), then the safety mechanism is activated. In this criterion, the actual probability has only a 2.5\% chance to be below that bound and we thus minimize the occurrence of false positives, at the cost of relatively late detection of unsafe episodes and more false negatives. 
+- If the upper bound of the confidence interval at time step t (based on the confidence level of 95\%) is above 50\% (i.e., Up(t) >= 50\%), then the safety mechanism is activated. 
+- If the lower bound of the confidence intervals at time step t is above 50\% (i.e., Low(t) >= 50\%), then the safety mechanism is activated. 
 
-
-Decision criteria identify the time step when the execution should be stopped and safety mechanisms should be activated. However, note that during our test, we continue the execution of the episodes until termination in order to extract the number of time steps until termination and the true label of episodes for our analysis. 
+It is important to note that the decision criteria identify the time step at which the execution should be stopped and the safety mechanisms should be activated. However, during the testing phase, the execution of the episodes continues until termination in order to extract the number of time steps until termination and the true label of episodes for further analysis.
 
 **How do the predictions based on the three above criteria compare in terms of accuracy?** Figures below present a comparison of the F1-scores of the three predictions at each time step for both case studies. 
 

@@ -1,11 +1,14 @@
 
+![GitHub](https://img.shields.io/github/license/amirhosseinzlf/STARLA?style=plastic)
+[![arXiv](https://img.shields.io/badge/arXiv%20-2206.07813-red?style=plastic&logo=arxiv)](https://arxiv.org/abs/2308.02594)
+
 # SMARLA: A Safety Monitoring Approach for Deep Reinforcement Learning Agents
 ## Table of Contents
 - [Introduction](#introduction)
 - [Publication](#publication)
 - [Description of the Approach](#description-of-the-approach)
-- [Use cases](#use-case-1-cartpole)
-  * [Use case 1](#use-case-1-cartpole)
+- [Use cases](#use-cases)
+  * [Use case 1](#use-case-1-cart-pole)
   * [Use case 2](#use-case-2-mountain-car)
 - [Code breakdown](#code-breakdown)
   * [Requirements](#requirements)
@@ -30,8 +33,6 @@ This repository is a companion page for the following paper
 > SMARLA: A Safety Monitoring Approach for Deep Reinforcement Learning Agents
 
 
-
-
 ## Description of the Approach
 
 
@@ -51,7 +52,7 @@ Our approach can be best understood by drawing an analogy to how humans asses th
 Similarly, our safety monitor functions like an observant, keeping an eye on the desirability and potential consequences of different actions taken by the agent in each state. Just as we evaluate the potential outcomes of our actions to make informed decisions, the safety monitor assesses the states and actions to predict the likelihood of safety violations if the execution is continued.
 
 
-# Use cases
+# Use Cases
 
 ## Use Case 1: Cart-Pole
 
@@ -72,7 +73,7 @@ As depicted in the figure, the state of the system is characterized by four elem
 
 • The position of the cart.
 
-• The velocity of the .
+• The velocity of the cart.
 
 • The angle of the pole.
 

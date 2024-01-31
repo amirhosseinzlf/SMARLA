@@ -29,7 +29,6 @@ _SMARLA_ is a black-box monitoring approach that uses machine learning to monito
 This repository is a companion page for the following paper 
 > SMARLA: A Safety Monitoring Approach for Deep Reinforcement Learning Agents
 
-> Submitted to ICSE 2024 
 
 
 

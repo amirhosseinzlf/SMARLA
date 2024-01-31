@@ -137,7 +137,7 @@ In this replication package, we have two notebook files for each case study the 
 
 `SMARLA_{Case Study Name}.ipynb` contains the implementation of SMARLA. Safety monitoring model and Abtraction data will be generated and stored as files. 
 
-`RQ_{Case Study Name}.ipynb` transforms the episodes and analyzed the performance of the safety violation prediction model with different parameters, and generates plots and figures to answer RQs
+`RQ_{Case Study Name}.ipynb` transforms the episodes analyzes the performance of the safety violation prediction model with different parameters, and generates plots and figures to answer RQs
 
 The Mountain-Car folder contains the implementation of SMARLA on the Mountain Car problem. Dataset and Result files follow the same structure as well. 
 
@@ -405,7 +405,7 @@ We also observe that the most suitable abstraction level is d=0.11 for _Cart-Pol
 
 
 
-To select the best abstraction level in practice we recommend following the two-step process detailed in section IV.C.3 of the paper. which could be summarised as, (1) training the safety violation prediction model with different levels of abstraction (covering abstraction levels with a few hundred to 100,000 states) (2) identifying the optimal range which corresponds to the highest F1-score after training (3) Within the optimal range, analyzing the time steps at which the safety monitor reaches its peak performance in operation. The goal is to identify the level of abstraction that enables the safety monitor to reach its highest performance in predicting safety violations at the earliest time step possible. 
+To select the best abstraction level in practice we recommend following the two-step process detailed in the approach section of the paper, which could be summarised as, (1) training the safety violation prediction model with different levels of abstraction (covering abstraction levels with a few hundred to 100,000 states) (2) identifying the optimal range which corresponds to the highest F1-score after training (3) Within the optimal range, analyzing the time steps at which the safety monitor reaches its peak performance in operation. The goal is to identify the level of abstraction that enables the safety monitor to reach its highest performance in predicting safety violations at the earliest time step possible. 
 
 
 

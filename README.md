@@ -9,6 +9,7 @@
 - [Use cases](#use-cases)
   * [Use case 1](#use-case-1-cart-pole)
   * [Use case 2](#use-case-2-mountain-car)
+  * [Use case 3](#use-case-3-Highway-Driving)
 - [Code breakdown](#code-breakdown)
   * [Requirements](#requirements)
   * [Getting started](#getting-started)
@@ -17,14 +18,15 @@
 - [Research Questions](#research-questions)
   * [RQ1](#rq1-how-accurately-and-early-can-we-predict-safety-violations-during-the-execution-of-episodes)
   * [RQ2](#rq2-how-can-the-safety-monitor-determine-when-to-trust-the-prediction-of-safety-violations)
-  * [RQ3](#rq3-what-is-the-effect-of-the-abstraction-level-on-the-safety-monitoring-component)
+  * [RQ3](#rq3-what-is-the-effect-of-the-prediction-threshold-on-the-safety-monitoring-system)
+  * [RQ4](#rq4-what-is-the-effect-of-the-abstraction-level-on-the-safety-monitoring-component)
 
 
 ## Introduction
 
 In this project, we propose a Safety Monitoring Approach for Reinforcement Learning Agents (_SMARLA_).  
 <!-- _SMARLA_ is a Safety Monitoring Approach for Reinforcement Learning Agents.  -->
-_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods to reduce the state space and thus increase the learnability of machine learning models to predict violations. We Implement SMARLA on two well-known RL benchmark problems known as Mountain-Car and Cart-Pole control problems.
+_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods to reduce the state space and thus increase the learnability of machine learning models to predict violations. We Implement SMARLA on thre well-known RL benchmark problems known as Mountain-Car and Cart-Pole control and Highway-Driving problems.
 
 
 ## Publication
@@ -128,6 +130,36 @@ Episodes can have three termination scenarios:
 - **Safety violation:** A safety violation is simulated by considering the crossing of the left border of the environment as an irrecoverable unsafe state that poses potential damage to the car. Consequently, when the car crosses the left border of the environment, it triggers a safety violation, leading to the termination of the episode. This modification allows us to assess the effectiveness of SMARLA in predicting safety violations.
 
 
+
+## Use Case 3: Highway Driving
+
+Third case study involves a DQN agent (implemented by stable baselines[1]) in the Highway-env[3] from gymnasium library [4]. The Highway driving environment is an open-source and another widely used environment for RL agents.
+
+In this environment an RL agent is learned to drive a car on a highway with three lanes. The objective of the agent is to drive along the highway at a high speed without colliding with other vehicles.  The agent gets a penalty of -10 for collisions, a 0.1 reward for driving in the rightmost lane, and a 0.4 reward for driving at high speeds (i.e., 20 to 30). Note that, the reward is normalized to the range of [0,1].
+
+
+
+
+<p align="center" width="100%">
+    <img width="60%" src="Results/Highway-Driving/Highway_Driving.png"> 
+</p>
+<p align="center" width="50%">
+   Highway Driving case study
+</p>
+
+
+The environment has a continuous state space of kinematic information of the ego vehicle and other vehicles on the road, with a total of 15 parameters. 
+
+Action space are consists of five high-level actions: 
+1. moving right. 
+2. moving left.
+3. accelerating.
+4. remaining idle.
+5. braking.
+
+
+An episode ends under two conditions: (1) if the car collides with another vehicle, or (2) if it exceeds the maximum duration of episodes (30 time steps in our case) without any collision.
+
 ## Code Breakdown
 This project is implemented in Python with Jupyter-notebook.
 
@@ -172,7 +204,7 @@ Here is the documentation on how to use this replication package.
 2. Download the Dataset of the replication package 
 3. Update the path to the dataset in the scripts
 4. Update the path for storing the results if needed
-5. To build the safety monitoring model on Mountain-Car: open `SMARLA_MountainCar.ipynb` and run the code. Similarly for Cart-Pole `SMARLA_CartPole.ipynb`
+5. To build the safety monitoring model: open `SMARLA_{Case Study Name}.ipynb` and run the code. 
 6. To generate the final results open `RQ_{Case Study Name}.ipynb` and run the notebook step by step.
 
 
@@ -195,15 +227,23 @@ This is the root directory of the repository. The directory is structured as fol
      |
      |---------- SMARLA_MountainCar.ipynb         Implementation of the SMARLA on Mountain-Car problem
      |
-     |---------- RQ_MountainCar.ipynb             Codes to replicate RQ1 - RQ2 and RQ3    
+     |---------- RQ_MountainCar.ipynb             Codes to replicate RQ1 - RQ2 - RQ3 and RQ4    
      |
-     |   
+     |
+     |Highway_Driving/                               Mountain-Car use case
+     |
+     |---------- SMARLA_HighwayDriving.ipynb         Implementation of the SMARLA on Highway Driving problem
+     |
+     |---------- RQ_Highway_Driving.ipynb             Codes to replicate RQ1 - RQ2 - RQ3 and RQ4    
+     |
+     |      
   
 ### Dataset Structure 
 
-  A Dataset is provided to reproduce the results. This dataset contains our DRL agent, episodes of random testing of the agent, Abstraction files, and the safety monitoring models for each case study. Thus the dataset is divided into two parts:
+  A Dataset is provided to reproduce the results. This dataset contains our DRL agent, episodes of random testing of the agent, Abstraction files, and the safety monitoring models for each case study. Thus the dataset is divided into three parts:
   1. Cart-Pole 
   2. Mountain-Car
+  3. Highway-Driving
   
   below is the structure of the dataset:
 
@@ -224,6 +264,18 @@ This is the root directory of the repository. The directory is structured as fol
      |Mountain-Car/
      |
      |--- /Trained_agent/                                      Trained DQN agent 90k steps in Mountain-Car environment 
+     |
+     |--- /Random_episodes/                                    Random episodes generated for training and testing 
+     |
+     |--- /Abstraction/                                        Abstraction data     
+     |
+     |--- /ML_models/                                          ML-based safety monitoring models                 
+     |
+     |
+     |
+     |Highway-Driving/
+     |
+     |--- /Trained_agent/                                      Trained DQN agent 70k steps in Highway Driving environment 
      |
      |--- /Random_episodes/                                    Random episodes generated for training and testing 
      |
@@ -251,20 +303,25 @@ We monitored the execution of each episode with SMARLA and at each time step. Wh
 
 
 <p align="center" width="100%">
-    <img width="45%" src="Results/Mountain-Car/RQ1 d_5 MC.png" > 
+    <img width="45%" src="Results/Mountain-Car/RQ1_R.png" > 
 </p>
 <p align="center" width="50%">
    Performance of the safety violation prediction model in Mountian-Car
 </p>
 
 <p align="center" width="100%">
-   <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ1 Cartpole.png">
+   <img width="45%" alt="CartPole" src="Results/Cart-Pole/RQ1 Cartpole_R.png">
  </p>
  <p align="center" width="50%">
    Performance of the safety violation prediction model in Cart-Pole
 </p>
 
-
+<p align="center" width="100%">
+   <img width="45%" alt="CartPole" src="Results/Highway-Driving/RQ1.png">
+ </p>
+ <p align="center" width="50%">
+   Performance of the safety violation prediction model in Highway Driving
+</p>
 
 
 
@@ -304,7 +361,12 @@ It is important to note that the decision criteria identify the time step at whi
 </p>
 
 
-
+<p align="center" width="100%">
+   <img width="45%" alt="CartPole" src="Results/Highway-Driving/RQ2.png">
+ </p>
+ <p align="center" width="50%">
+   F1-score of the safety violation prediction model for different decision criteria in the Highway Driving case study
+</p>
 
 
 Results from both case studies show that using the upper bound is the best choice as it leads to early and accurate predictions. 
@@ -325,7 +387,33 @@ Selecting the suitable decision criterion depends on the context and the trade-o
 
 **Answer:** Considering the upper bound of the confidence intervals, we achieve significantly earlier and highly accurate detection of safety violations. This allows the system to have a longer time frame to implement preventive or corrective safety mechanisms. However, it comes at the expense of having a slightly higher false positive rate.
 
-## RQ3. What is the effect of the abstraction level on the safety monitoring component?
+## RQ3. What is the effect of the prediction threshold on the safety monitoring system?
+
+This research question aims to investigate the impact of varying prediction threshold values on our safety monitoring approach. We evaluate the prediction times and performance of SMARLA using different prediction thresholds, based on the same set of episodes randomly generated in RQ1. 
+
+For each case study, we consider three prediction thresholds $\theta \in \{25\%, 50\%, 75\%\}$ and assess the performance of SMARLA according to the three decision criteria explained in the paper Section 5.4.2 (i.e., $P(t) \geq \theta$, $Up(t) \geq \theta$, and $Low(t) \geq \theta$). For each case study and evaluation criteria, we report:
+
+1. The average decision time step
+2. The average remaining percentage of time steps to execute until violation
+3. The number of false positives of the safety monitor
+4. The number of false negatives
+
+
+
+<p align="center" width="100%">
+    <img width="100%" src="Results/RQ3.JPG" > 
+</p>
+<p align="center" width="50%">
+   Comparison of 25%, 50% and 75% threshold values
+</p>
+
+
+**Answer:** The performance of safety monitoring is sensitive to the prediction threshold $\theta$. Higher prediction thresholds reduce false positives but lead to delayed prediction of safety violations and higher false negatives, whereas lower thresholds lead to earlier predictions and lower false negatives but at the cost of increased false positives. Therefore, selecting an optimal threshold is crucial to balance timely and accurate predictions, enhancing the system's effectiveness in predicting safety violations. Such selection is specific to the deployment environment of the DRL agent, but a threshold value around $\theta=50\%$ is likely to be balanced.
+
+
+
+
+## RQ4. What is the effect of the abstraction level on the safety monitoring component?
 
 *We aim to investigate if and how different levels of state abstraction can affect safety violation prediction. Specifically, we want to study the impact of state abstraction levels on (1) the accuracy of the safety violation prediction model after training, and (2) the accuracy of the ML model in operation.
 Our goal is to understand the possible trade-offs between the size of the feature space and the granularity of information captured by features, both determined by the abstraction level. In order to provide guidance in selecting proper abstraction levels in practice.*
@@ -360,15 +448,22 @@ Our analysis revealed that abstraction levels ranging from 0.1 to 0.3 result in 
    Cart-Pole case study
 </p>
 
+<p align="center" width="100%">
+    <img width="50%" src="Results/Highway-Driving/P_RQ4.png" > 
+</p>
+<p align="center" width="50%">
+   Cart-Pole case study
+</p>
 
- <p align="center" width="50%">
+
+<p align="center" width="40%">
    Precision, recall, and F1-score achieved after the training of the safety violation prediction model and the number of abstract states across different abstraction levels
 </p>
 
 **The performance of the model in operation with different abstraction levels.** This part focuses on evaluating the performance of the safety violation prediction model during the execution of episodes. We analyze how well the trained models perform in operation in different time steps, considering different abstraction levels within the optimal range of abstraction levels.
 The main focus is to assess the model's ability to accurately predict safety violations early. 
 
-The F1-score of the safety violation prediction models for the two case studies, considering various levels of abstraction, are presented in the Figures below: 
+The F1-score of the safety violation prediction models for the three case studies, considering various levels of abstraction, are presented in the Figures below: 
 
 
 
@@ -389,6 +484,14 @@ The F1-score of the safety violation prediction models for the two case studies,
 
 <p align="center" width="50%">
    Mountain-Car case study
+</p>
+
+<p align="center" width="100%">
+    <img width="45%" src="Results/Highway-Driving/RQ3.png"> 
+</p>
+
+<p align="center" width="50%">
+   Highway Driving case study
 </p>
 
 <p align="center" width="50%">
@@ -417,5 +520,9 @@ References
 1- [stable-baselines](https://github.com/hill-a/stable-baselines)
 
 2- [gym](https://github.com/openai/gym)
+
+3- [Highway-env](https://github.com/Farama-Foundation/HighwayEnv)
+
+4- [gymnasium](https://gymnasium.farama.org/)
 
 

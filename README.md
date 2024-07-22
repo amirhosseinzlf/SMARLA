@@ -9,7 +9,7 @@
 - [Use cases](#use-cases)
   * [Use case 1](#use-case-1-cart-pole)
   * [Use case 2](#use-case-2-mountain-car)
-  * [Use case 3](#use-case-3-Highway-Driving)
+  * [Use case 3](#use-case-3-highway-driving)
 - [Code breakdown](#code-breakdown)
   * [Requirements](#requirements)
   * [Getting started](#getting-started)
@@ -391,7 +391,7 @@ Selecting the suitable decision criterion depends on the context and the trade-o
 
 This research question aims to investigate the impact of varying prediction threshold values on our safety monitoring approach. We evaluate the prediction times and performance of SMARLA using different prediction thresholds, based on the same set of episodes randomly generated in RQ1. 
 
-For each case study, we consider three prediction thresholds $\theta \in \{25\%, 50\%, 75\%\}$ and assess the performance of SMARLA according to the three decision criteria explained in the paper Section 5.4.2 (i.e., $P(t) \geq \theta$, $Up(t) \geq \theta$, and $Low(t) \geq \theta$). For each case study and evaluation criteria, we report:
+For each case study, we consider three prediction thresholds $\theta$ \in \{25\%, 50\%, 75\% \} and assess the performance of SMARLA according to the three decision criteria explained in the paper Section 5.4.2 (i.e., $P(t) \geq \theta$, $Up(t) \geq \theta$, and $Low(t) \geq \theta$). For each case study and evaluation criteria, we report:
 
 1. The average decision time step
 2. The average remaining percentage of time steps to execute until violation

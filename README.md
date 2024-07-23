@@ -220,7 +220,7 @@ This is the root directory of the repository. The directory is structured as fol
      |
      |---------- SMARLA_CartPole.ipynb            Implementation of the SMARLA on Cart-Pole problem
      |
-     |---------- RQ_CartPole.ipynb                Codes to replicate RQ1 - RQ2 and RQ3
+     |---------- RQ_CartPole.ipynb                Codes to replicate RQ1 - RQ2 - RQ3 and RQ4
      |
      |
      |Mountain_Car/                               Mountain-Car use case
@@ -230,7 +230,7 @@ This is the root directory of the repository. The directory is structured as fol
      |---------- RQ_MountainCar.ipynb             Codes to replicate RQ1 - RQ2 - RQ3 and RQ4    
      |
      |
-     |Highway_Driving/                               Mountain-Car use case
+     |Highway_Driving/                               Highway Driving use case
      |
      |---------- SMARLA_HighwayDriving.ipynb         Implementation of the SMARLA on Highway Driving problem
      |

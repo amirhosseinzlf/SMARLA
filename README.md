@@ -22,6 +22,7 @@
   * [RQ4](#rq4-what-is-the-effect-of-the-abstraction-level-on-the-safety-monitoring-component)
  - [Extra](#extra)
  - [References](#references)
+ - [Citation](#cite-our-paper)
 
 
 ## Introduction
@@ -544,5 +545,21 @@ References
 3- [Highway-env](https://github.com/Farama-Foundation/HighwayEnv)
 
 4- [gymnasium](https://gymnasium.farama.org/)
+
+
+Cite our paper:
+--------
+
+If you've found SMARLA useful for your research, please cite our paper as follows:
+
+    @misc{zolfagharian2024smarlasafetymonitoringapproach,
+      title={SMARLA: A Safety Monitoring Approach for Deep Reinforcement Learning Agents}, 
+      author={Amirhossein Zolfagharian and Manel Abdellatif and Lionel C. Briand and Ramesh S},
+      year={2024},
+      eprint={2308.02594},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2308.02594}, 
+    }
 
 

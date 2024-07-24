@@ -515,6 +515,21 @@ To select the best abstraction level in practice we recommend following the two-
 **Answer:** The accuracy of safety violation prediction models is sensitive to the selected abstraction level and, therefore, the latter should be carefully selected following the proposed procedure.
 
 
+
+Extra
+----
+We have also conducted analysis on comparing Random Forest with KNN and Decision Trees. Our results show that Random Forest consistently shows better results than the other studied models in the three case studies, thus confirming our choice to include it in our safety monitoring approach. More details are provided in the paper (Section 4.2).
+
+<p align="center" width="100%">
+    <img width="100%" src="Results/Model-Comp.JPG"> 
+</p>
+
+<p align="center" width="50%">
+   Comarision of Random Forest, Decision Tree and KNN on three case studies.
+</p>
+
+
+
 References
 -----
 1- [stable-baselines](https://github.com/hill-a/stable-baselines)

@@ -525,7 +525,7 @@ We have also conducted analysis on comparing Random Forest with KNN and Decision
 </p>
 
 <p align="center" width="50%">
-   Comarision of Random Forest, Decision Tree and KNN on three case studies.
+   Comparision of Random Forest, Decision Tree and KNN on three case studies.
 </p>
 
 

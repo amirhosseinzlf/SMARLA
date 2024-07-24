@@ -20,13 +20,15 @@
   * [RQ2](#rq2-how-can-the-safety-monitor-determine-when-to-trust-the-prediction-of-safety-violations)
   * [RQ3](#rq3-what-is-the-effect-of-the-prediction-threshold-on-the-safety-monitoring-system)
   * [RQ4](#rq4-what-is-the-effect-of-the-abstraction-level-on-the-safety-monitoring-component)
+ - [Extra](#extra)
+ - [References](#references)
 
 
 ## Introduction
 
 In this project, we propose a Safety Monitoring Approach for Reinforcement Learning Agents (_SMARLA_).  
 <!-- _SMARLA_ is a Safety Monitoring Approach for Reinforcement Learning Agents.  -->
-_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods to reduce the state space and thus increase the learnability of machine learning models to predict violations. We Implement SMARLA on thre well-known RL benchmark problems known as Mountain-Car and Cart-Pole control and Highway-Driving problems.
+_SMARLA_ is a black-box monitoring approach that uses machine learning to monitor the RL agent and predict the safety violations in DRL agents accurately and early on time. We leverage state abstraction methods to reduce the state space and thus increase the learnability of machine learning models to predict violations. We implement SMARLA on three well-known RL benchmark problems known as Mountain-Car and Cart-Pole control and Highway-Driving problems.
 
 
 ## Publication
@@ -60,7 +62,7 @@ Similarly, our safety monitor functions like an observant, keeping an eye on the
 We considered a DQN agent (implemented by stable baselines[1]) on the Cart-Pole environment from the OpenAI Gym library[2] as the first case study. Cart-Pole environment is an open-source and widely used environment for RL agents.
 
 In the Cart-Pole (also known as invert pendulum), a pole is attached to a cart, which moves along a track. The movement of the cart is bidirectional so the available actions are pushing the cart to the left and right. However, the movement of the cart is restricted and the maximum range is 2.4 from the central point. 
-The pole starts upright, and the goal is to balance it by applying two discrete actions of (1) moving the cart to the left and (2) moving the cart to the right.
+The pole starts upright, and the goal is to balance it by applying two discrete actions: (1) moving the cart to the left and (2) moving the cart to the right.
 
 
 <div align="center">
@@ -133,9 +135,9 @@ Episodes can have three termination scenarios:
 
 ## Use Case 3: Highway Driving
 
-Third case study involves a DQN agent (implemented by stable baselines[1]) in the Highway-env[3] from gymnasium library [4]. The Highway driving environment is an open-source and another widely used environment for RL agents.
+The third case study involves a DQN agent (implemented by stable baselines[1]) in the Highway-env[3] from the gymnasium library [4]. The Highway driving environment is an open-source and another widely used environment for RL agents.
 
-In this environment an RL agent is learned to drive a car on a highway with three lanes. The objective of the agent is to drive along the highway at a high speed without colliding with other vehicles.  The agent gets a penalty of -10 for collisions, a 0.1 reward for driving in the rightmost lane, and a 0.4 reward for driving at high speeds (i.e., 20 to 30). Note that, the reward is normalized to the range of [0,1].
+In this environment, an RL agent is learned to drive a car on a highway with three lanes. The objective of the agent is to drive along the highway at a high speed without colliding with other vehicles.  The agent gets a penalty of -10 for collisions, a 0.1 reward for driving in the rightmost lane, and a 0.4 reward for driving at high speeds (i.e., 20 to 30). Note that, the reward is normalized to the range of [0,1].
 
 
 
@@ -144,18 +146,18 @@ In this environment an RL agent is learned to drive a car on a highway with thre
     <img width="60%" src="Results/Highway-Driving/Highway_Driving.png"> 
 </p>
 <p align="center" width="50%">
-   Highway Driving case study
+   Highway Driving Case Study
 </p>
 
 
 The environment has a continuous state space of kinematic information of the ego vehicle and other vehicles on the road, with a total of 15 parameters. 
 
-Action space are consists of five high-level actions: 
-1. moving right. 
-2. moving left.
-3. accelerating.
-4. remaining idle.
-5. braking.
+Action space consists of five high-level actions: 
+1. Moving Right. 
+2. Moving Left.
+3. Accelerating.
+4. Remaining Idle.
+5. Braking.
 
 
 An episode ends under two conditions: (1) if the car collides with another vehicle, or (2) if it exceeds the maximum duration of episodes (30 time steps in our case) without any collision.
@@ -193,6 +195,9 @@ The code was developed and tested based on the following packages:
 - gym 0.17.3
 - numpy 1.21.6
 - pandas 1.3.5
+- torch 2.2.0
+- stable_baselines3 2.2.1 (for Highway Driving case study)
+- gymnasium 0.29.1
 ---------------
 
 Here is the documentation on how to use this replication package.
@@ -404,7 +409,7 @@ For each case study, we consider three prediction thresholds $\theta$ \in \{25\%
     <img width="100%" src="Results/RQ3.JPG" > 
 </p>
 <p align="center" width="50%">
-   Comparison of 25%, 50% and 75% threshold values
+   Comparison of 25%, 50%, and 75% threshold values
 </p>
 
 
@@ -525,7 +530,7 @@ We have also conducted analysis on comparing Random Forest with KNN and Decision
 </p>
 
 <p align="center" width="50%">
-   Comparision of Random Forest, Decision Tree and KNN on three case studies.
+   Comparison of Random Forest, Decision Tree, and KNN on three case studies.
 </p>
 
 

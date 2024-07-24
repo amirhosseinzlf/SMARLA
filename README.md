@@ -1,5 +1,6 @@
 
 ![GitHub](https://img.shields.io/github/license/amirhosseinzlf/STARLA?style=plastic)
+[![arXiv](https://img.shields.io/badge/arXiv%20-2308.02594-red?style=plastic&logo=arxiv)](https://arxiv.org/abs/2308.02594)
 
 # SMARLA: A Safety Monitoring Approach for Deep Reinforcement Learning Agents
 ## Table of Contents
